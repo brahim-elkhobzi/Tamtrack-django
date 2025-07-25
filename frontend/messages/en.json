@@ -1,0 +1,28 @@
+{
+  "HomePage": {
+    "title": "Hello World!",
+    "about": "Go to the about page"
+  },
+   "Navbar": {
+    "home": "Home",
+    "modules": "Modules",
+    "about": "About",
+    "contact": "Contact",
+    "login": "Login",
+    "signup": "Sign Up"
+  },
+  "login": {
+    "title": "Login",
+    "username": "Username",
+    "password": "Password",
+    "submit": "Submit",
+    "forgotPassword": "Forgot Password?",
+    "noAccount": "Don't have an account?",
+    "register": "Register"
+  },
+  "Hero": {
+    "title": "Welcome to Our Platform",
+    "subtitle": "Discover amazing services tailored just for you",
+    "cta": "Get Started"
+  }
+}

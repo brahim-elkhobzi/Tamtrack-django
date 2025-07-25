@@ -1,0 +1,15 @@
+{
+  "HomePage": {
+    "title": "bonjour le monde !",
+    "about": "Aller à la page à propos"
+  },
+    "Navbar": {
+    "home": "Accueil",
+    "modules": "Modules",
+    "about": "À propos",
+    "contact": "Contact",
+    "login": "Connexion",
+    "signup": "S'inscrire"
+  }
+  
+}
