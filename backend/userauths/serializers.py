@@ -14,6 +14,19 @@ from django.core.mail import EmailMessage
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        # Cette méthode spéciale est appelée par Simple JWT pour créer le token
+        token = super().get_token(user)
+
+        # C'est ici que l'on ajoute nos données personnalisées DANS le token.
+        # Le frontend pourra ensuite les décoder.
+        token['first_name'] = user.first_name
+        token['email'] = user.email
+        token['level'] = user.level # <-- LA LIGNE LA PLUS IMPORTANTE !
+
+        return token
+
     def validate(self, attrs):
         email = attrs.get("email")
         password = attrs.get("password")
@@ -26,8 +39,13 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
             raise serializers.ValidationError("Invalid email or password")
 
         data = super().validate(attrs)
-        data["first_name"] = user.first_name
-        data["last_name"] = user.last_name
+        data['user'] = {
+            'id': self.user.id,
+            'email': self.user.email,
+            'first_name': self.user.first_name,
+            'last_name': self.user.last_name,
+            'level': self.user.level,
+        }
         return data
 
 

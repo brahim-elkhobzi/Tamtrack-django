@@ -21,7 +21,7 @@ const LoginPage = () => {
     try {
       await login(email, password);
       // Redirect after successful login
-      router.push("/dashboard"); // or wherever you want to redirect
+      router.push("/quiz/math"); // or wherever you want to redirect
     } catch (err) {
       setError("Login failed. Please check your credentials and try again.");
       console.error("Login error:", err);
