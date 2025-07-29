@@ -9,6 +9,10 @@ import { useRouter } from "next/navigation";
 interface User {
   exp: number;
   user_id?: string; // Add user_id to access it easily
+  level?: string; // Add level to access it easily
+  email: string;
+  first_name?: string;
+  last_name?: string;
 }
 
 interface AuthContextType {
@@ -25,6 +29,8 @@ interface userRegistrationData {
   last_name?: string;
   phone_number?: string;
   gender?: string;
+  level?: string; 
+  
 }
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -122,3 +128,7 @@ export const useAuth = () => {
   if (!context) throw new Error("useAuth must be used within an AuthProvider");
   return context;
 };
+
+
+
+

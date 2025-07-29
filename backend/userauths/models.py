@@ -38,6 +38,11 @@ class CustomUserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
 
+    LEVEL_CHOICES = (
+        ('tronc commun', 'Tronc Commun'),
+        ('premier bac', 'Premier Bac'),
+        ('deuxieme bac', 'Deuxième Bac'),
+    )
 
     email = models.EmailField(db_index=True, unique=True, max_length=254)
     first_name = models.CharField(max_length=150, blank=True, null=True)

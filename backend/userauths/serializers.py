@@ -10,6 +10,7 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.core.mail import EmailMessage
+ 
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -57,8 +58,8 @@ class UserSerializer(serializers.ModelSerializer):
 class UserStatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'email', 'first_name', 'last_name']
-        read_only_fields = ['id', 'email', 'first_name', 'last_name']
+        fields = ['id', 'email', 'first_name', 'last_name', 'level']
+        read_only_fields = ['id', 'email', 'first_name', 'last_name', 'level']
 
 
 class MiniUserSerializer(serializers.ModelSerializer):
