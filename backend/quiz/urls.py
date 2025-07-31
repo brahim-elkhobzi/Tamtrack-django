@@ -2,6 +2,9 @@
 from django.urls import path
 from .views import TopicListView, QuizQuestionsView, SubmitAnswerView
 
+from .views import FullQuizView
+from .views import SubmitAnswerView
+
 urlpatterns = [
     # API pour obtenir la liste des thèmes de l'utilisateur
     # GET /api/quiz/topics/
@@ -11,7 +14,13 @@ urlpatterns = [
     # GET /api/quiz/questions/Ensembles de nombres/
     path('questions/<str:topic_name>/', QuizQuestionsView.as_view(), name='quiz-questions'),
 
-    # API pour soumettre une réponse
-    # POST /api/quiz/submit/Ensembles de nombres/tc_en_01/
-    path('submit/<str:topic_name>/<str:question_id>/', SubmitAnswerView.as_view(), name='submit-answer'),
+
+    path('submit/<str:topic_name>/<path:question_text>/', SubmitAnswerView.as_view(), name='submit-answer'),
+
+
+
+
+    path('get-full-quiz/', FullQuizView.as_view(), name='get-full-quiz'),
+    
+    
 ]

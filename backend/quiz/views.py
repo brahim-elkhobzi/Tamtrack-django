@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from . import services # Importer le fichier de services
+from .services import get_full_quiz_by_level
 
 class TopicListView(APIView):
     permission_classes = [IsAuthenticated] # S'assurer que l'utilisateur est connecté
@@ -37,16 +38,14 @@ class QuizQuestionsView(APIView):
 
 
 class SubmitAnswerView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def post(self, request, topic_name, question_id):
+    def post(self, request, topic_name, question_text):
         user_level = request.user.level
         user_answer = request.data.get('answer')
 
         if not user_answer:
             return Response({'error': 'La réponse (answer) est requise.'}, status=400)
             
-        result = services.check_answer(user_level, topic_name, question_id, user_answer)
+        result = services.check_answer(user_level, topic_name, question_text, user_answer)
 
         if result is None:
             return Response({'error': 'Question non trouvée.'}, status=404)
@@ -55,3 +54,20 @@ class SubmitAnswerView(APIView):
         # Mais les questions elles-mêmes restent dans le fichier
         
         return Response(result)
+    
+
+
+
+
+
+    # quiz/views.py
+
+# ... (vos autres vues et imports) ...
+
+class FullQuizView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user_level = request.user.level
+        full_quiz_data = get_full_quiz_by_level(user_level)
+        return Response(full_quiz_data)
