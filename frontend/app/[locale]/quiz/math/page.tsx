@@ -101,6 +101,7 @@ export default function MathGuidedQuizPage() {
                 if (response.data.is_correct) {
                     newScores[currentTopic].score += 1;
                 }
+                alert(`Votre score pour ${currentTopic} est maintenant ${newScores[currentTopic].score}/${newScores[currentTopic].total}`);
                 return newScores;
             });
             

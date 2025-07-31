@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'api',
     'groq',
     'chat', 
+    'quiz',
 
 ]
 
