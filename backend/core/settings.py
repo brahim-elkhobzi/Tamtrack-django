@@ -51,9 +51,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'userauths',
     'api',
-    'groq',
-    'chat', 
     'quiz',
+    'profiles',
 
 ]
 

@@ -7,8 +7,9 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/app/context/AuthContext';
 import api from '@/utils/axios';
 
-// --- Interfaces (La structure est bonne, gardons-la) ---
+// --- Interfaces pour la structure des données ---
 interface Question {
+  id: string; // Utiliser un ID fourni par le backend pour plus de fiabilité
   question: string;
   options: string[];
   topic: string; 
@@ -25,7 +26,7 @@ type ScoresByTopic = {
   [topic: string]: { score: number; total: number };
 };
 
-// --- Composant séparé pour l'arrière-plan ---
+// --- Composant pour l'arrière-plan stylisé ---
 const AnimatedBackground = () => (
     <div className="fixed top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
         <div className="shape w-20 h-20 bg-white/10 rounded-full absolute top-[10%] left-[10%] animate-float"></div>
@@ -34,42 +35,43 @@ const AnimatedBackground = () => (
     </div>
 );
 
-// --- LE COMPOSANT DE LA PAGE PRINCIPALE ---
+// --- LE COMPOSANT DE LA PAGE PRINCIPALE DU QUIZ ---
 export default function MathGuidedQuizPage() {
     const router = useRouter();
     const { user, loading: authLoading } = useAuth();
     
-    // États React (aucune modification majeure nécessaire)
+    // --- États React pour gérer toute la logique du quiz ---
     const [fullQuizData, setFullQuizData] = useState<FullQuizData | null>(null);
     const [currentTopicIndex, setCurrentTopicIndex] = useState(0);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
     const [feedback, setFeedback] = useState<Feedback | null>(null);
     const [scoresByTopic, setScoresByTopic] = useState<ScoresByTopic>({});
+    const [isQuizFinished, setIsQuizFinished] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // Correction 1: Utiliser `useMemo` pour dériver l'état `topics` de `fullQuizData`
-    // Cela garantit qu'ils sont toujours synchronisés et évite les erreurs de décalage.
     const topics = useMemo(() => fullQuizData ? Object.keys(fullQuizData) : [], [fullQuizData]);
 
-    // Chargement initial des données du quiz
     useEffect(() => {
-        if (authLoading || !user) return; // Attendre que l'utilisateur soit chargé
+        if (authLoading || !user) return;
         
-        const fetchFullQuiz = async () => {
+
+        fetchFullQuiz();
+    }, [authLoading, user]);
+
+            const fetchFullQuiz = async () => {
             try {
                 const response = await api.get('/quiz/get-full-quiz/');
                 const data = response.data;
-                
                 if (data && typeof data === 'object' && Object.keys(data).length > 0) {
                     setFullQuizData(data);
-                    // Pas besoin de setTopics, `useMemo` s'en occupe
                     const fetchedTopics = Object.keys(data);
                     const initialScores: ScoresByTopic = {};
                     fetchedTopics.forEach(topic => { initialScores[topic] = { score: 0, total: 0 }; });
                     setScoresByTopic(initialScores);
                 } else {
-                    setFullQuizData({}); // Mettre à jour avec un objet vide si pas de données
+                    setFullQuizData({});
                 }
             } catch (error) {
                 console.error("Impossible de charger le parcours guidé:", error);
@@ -77,38 +79,71 @@ export default function MathGuidedQuizPage() {
                 setLoading(false);
             }
         };
-        fetchFullQuiz();
-    }, [authLoading, user]);
 
-    // --- Correction 2 : Sécurisation des Fonctions ---
-    // Logique de soumission de la réponse
+    // Fonction qui s'occupe de la sauvegarde finale
+    const saveFinalScores = async () => {
+        try {
+            await api.post('/profiles/analyze-results/', { scores: scoresByTopic });
+            console.log("Scores finaux enregistrés avec succès dans la base de données !");
+        } catch (error) {
+            console.error("Erreur lors de la sauvegarde finale des scores:", error);
+        }
+    };
+
+    // frontend/app/quiz/math/page.tsx
+
     const handleAnswerSubmit = async () => {
+        // Les gardes de début de fonction sont bonnes, on les garde.
+        if (!selectedOption || !fullQuizData || isSubmitting) return;
+
+        setIsSubmitting(true);
         const currentTopic = topics[currentTopicIndex];
-        const currentQuestion = fullQuizData?.[currentTopic]?.[currentQuestionIndex];
-        
-        // La garde `if` doit être au tout début
-        if (!selectedOption || !currentQuestion) return;
+        const currentQuestion = fullQuizData[currentTopic][currentQuestionIndex];
         
         try {
-            
-            const urlToCall = `/quiz/submit/${encodeURIComponent(currentTopic)}/${encodeURIComponent(currentQuestion.question)}/`;
+            const urlToCall = `/profiles/submit-answer/${encodeURIComponent(currentTopic)}/${encodeURIComponent(currentQuestion.question)}/`;
             const response = await api.post(urlToCall, { answer: selectedOption });
+
+            // On affiche immédiatement le feedback à l'utilisateur
             setFeedback(response.data);
 
+            // --- C'EST ICI LA CORRECTION --- 
+
+            let finalScore = 0;
+            let finalTotal = 0;
+            // Étape 1 : On calcule et met à jour l'état, SANS effets de bord.
             setScoresByTopic(prevScores => {
-                const newScores = { ...prevScores }; // Bonne pratique pour ne pas muter l'état
-                newScores[currentTopic].total += 1;
+                const newScores = { ...prevScores };
+                const topicScores = newScores[currentTopic];
+            
+                topicScores.total ++;
                 if (response.data.is_correct) {
-                    newScores[currentTopic].score += 1;
+                    topicScores.score ++;
                 }
-                alert(`Votre score pour ${currentTopic} est maintenant ${newScores[currentTopic].score}/${newScores[currentTopic].total}`);
+                newScores[currentTopic] = topicScores;
+                
+
+                // On stocke les scores finaux pour les utiliser APRÈS
+                finalScore = topicScores.score ;
+                finalTotal = topicScores.total ;
+                
+
                 return newScores;
             });
+
+            // Étape 2 : L'effet de bord (l'alerte) est maintenant EN DEHORS
+            // de la fonction de mise à jour de l'état. Elle ne sera donc exécutée qu'une seule fois.
+            // On attend un petit peu pour que l'état se mette à jour avant de l'afficher.
+            setTimeout(() => {
+                // alert(`Votre progression pour ${currentTopic} : ${finalScore}/${finalTotal}`);
+            }, 0);
             
-        } catch (error) { console.error("Error submitting answer:", error); }
+        } catch (error) { 
+            console.error("Erreur lors de la soumission :", error); 
+        } finally {
+            setIsSubmitting(false);
+        }
     };
-    
-    // Logique de progression
     const handleNext = () => {
         setFeedback(null);
         setSelectedOption(null);
@@ -119,69 +154,85 @@ export default function MathGuidedQuizPage() {
         
         if (currentQuestionIndex < questionsInCurrentTopic.length - 1) {
             setCurrentQuestionIndex(prev => prev + 1);
-        } 
-        else if (currentTopicIndex < topics.length - 1) {
+        } else if (currentTopicIndex < topics.length - 1) {
             setCurrentTopicIndex(prev => prev + 1);
             setCurrentQuestionIndex(0);
-        } 
-        else {
-            console.log("Scores finaux par chapitre :", scoresByTopic);
-            router.push('/modules'); // Rediriger à la fin
+        } else {
+            console.log("Quiz terminé ! Affichage des résultats et sauvegarde en arrière-plan...");
+            setIsQuizFinished(true); 
+            saveFinalScores(); // Lancer la sauvegarde finale
         }
     };
-
-    // --- Correction 3 : Gestion robuste des états de chargement ---
+    
     if (loading || authLoading) {
         return <div className="gradient-bg min-h-screen flex items-center justify-center text-white text-xl">Préparation de votre parcours...</div>;
     }
-    
-    if (topics.length === 0) {
-        return <div className="gradient-bg min-h-screen flex items-center justify-center text-white text-xl text-center p-4">Aucun chapitre n'a été trouvé pour votre niveau.</div>;
+
+    if (isQuizFinished) {
+        return (
+            <div className="min-h-screen gradient-bg flex items-center justify-center p-4 font-sans">
+                <AnimatedBackground />
+                <div className="glass-effect rounded-3xl shadow-2xl w-full max-w-2xl p-8 relative z-10 animate-slideIn">
+                    <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">Résultats de votre Évaluation</h1>
+                    
+                    <div className="space-y-4">
+                        {Object.entries(scoresByTopic).map(([topic, scoreData]) => {
+                            const percentage = scoreData.total > 0 ? Math.round((scoreData.score / scoreData.total) * 100) : 0;
+                            return (
+                                <div key={topic} className="bg-white/50 p-4 rounded-lg">
+                                    <div className="flex justify-between items-center font-semibold text-gray-700">
+                                        <span>{topic}</span>
+                                        <span>{scoreData.score} / {scoreData.total}</span>
+                                    </div>
+                                    <div className="w-full bg-slate-200 rounded-full h-2 mt-2">
+                                        <div 
+                                            className="bg-gradient-to-r from-green-400 to-blue-500 h-2 rounded-full" 
+                                            style={{ width: `${percentage}%`, transition: 'width 1s ease-out' }}
+                                        ></div>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+
+                    <button 
+                        onClick={() => router.push('/profile')} 
+                        className="w-full mt-8 text-white font-semibold py-3 px-6 rounded-xl text-lg bg-gradient-to-r from-indigo-500 to-purple-600 hover:opacity-90">
+                        Voir mon Profil et mes Recommandations
+                    </button>
+                </div>
+            </div>
+        );
     }
     
-    // --- Sécurisation de l'accès aux variables pour le rendu ---
     const currentTopic = topics[currentTopicIndex];
     const currentQuestion = fullQuizData?.[currentTopic]?.[currentQuestionIndex];
-    
+
     if (!currentQuestion) {
         return <div className="gradient-bg min-h-screen flex items-center justify-center text-white">Chargement...</div>;
     }
     
     const totalQuestionsInTopic = fullQuizData![currentTopic].length;
+    
     const progressPercent = ((currentQuestionIndex + 1) / totalQuestionsInTopic) * 100;
     
-    // Définition des classes du bouton de manière explicite pour plus de clarté
-    const isSubmitDisabled = !selectedOption;
-    const submitButtonClasses = `
-        w-full text-black font-semibold py-3 px-6 rounded-xl text-lg 
-        transition-all duration-300 transform
-        ${isSubmitDisabled 
-            ? 'bg-gray-400 cursor-not-allowed opacity-70' // Style quand il est désactivé
-            : 'gradient-btn-green hover:scale-105 hover:shadow-lg animate-pulse-btn' // Style quand il est activé
-        }
-    `;
-
     return (
         <div className="min-h-screen gradient-bg flex items-center justify-center p-4 font-sans">
             <AnimatedBackground />
-
             <div className="glass-effect rounded-3xl shadow-2xl w-full max-w-2xl p-6 sm:p-8 relative z-10">
                 <header className="text-center mb-6">
                     <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">Parcours : {currentTopic}</h1>
                     <p className="text-gray-600">Question {currentQuestionIndex + 1} sur {totalQuestionsInTopic}</p>
                 </header>
-
                 <div className="w-full bg-slate-200 rounded-full h-2.5 mb-8">
                     <div className="bg-gradient-to-r from-indigo-500 to-purple-600 h-2.5 rounded-full" style={{ width: `${progressPercent}%`, transition: 'width 0.5s ease-out' }}></div>
                 </div>
-
                 {feedback && (
                     <div className={`animate-slideIn mb-6 p-4 rounded-xl border-l-4 ${feedback.is_correct ? 'bg-green-50 border-green-400 text-green-700' : 'bg-red-50 border-red-400 text-red-700'}`}>
                         <h3 className="font-bold">{feedback.is_correct ? 'Correct !' : 'Incorrect.'}</h3>
                         <p className="text-sm mt-1">{feedback.explanation}</p>
                     </div>
                 )}
-                
                 <div className="mb-8">
                     <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl p-6 border border-indigo-100">
                         <h2 className="text-lg sm:text-xl font-semibold text-gray-800 leading-relaxed">
@@ -189,7 +240,6 @@ export default function MathGuidedQuizPage() {
                         </h2>
                     </div>
                 </div>
-                
                 <div className="space-y-4 mb-8">
                     {currentQuestion.options.map((optionText, index) => {
                          const isSelected = selectedOption === optionText;
@@ -204,7 +254,6 @@ export default function MathGuidedQuizPage() {
                          } else if (isSelected) {
                              cardStyle = "border-indigo-500 bg-indigo-50 ring-2 ring-indigo-300";
                          }
-
                         return (
                           <div
                             key={index}
@@ -214,21 +263,16 @@ export default function MathGuidedQuizPage() {
                                 <span className="font-medium text-gray-700">{optionText}</span>
                           </div>
                         );
-                    })}
+                   })}
                 </div>
-                
                 <div className="h-20 flex items-center">
                     {feedback ? (
-                      <button onClick={handleNext} className="w-full text-black font-semibold py-3 px-6 rounded-xl text-lg bg-gradient-to-r from-indigo-500 to-purple-600 hover:opacity-90">
+                      <button onClick={handleNext} disabled={isSubmitting} className="w-full text-white font-semibold py-3 px-6 rounded-xl text-lg bg-gradient-to-r from-indigo-500 to-purple-600 hover:opacity-90 disabled:bg-gray-400">
                         Continuer
                       </button>
                     ) : (
-                      <button 
-                        onClick={handleAnswerSubmit} 
-                        disabled={isSubmitDisabled} 
-                        className={submitButtonClasses} // Utilisation de nos classes dynamiques
-                      >
-                        Soumettre
+                      <button onClick={handleAnswerSubmit}  className={`gradient-btn-green w-full text-white font-semibold py-3 px-6 rounded-xl text-lg disabled:bg-gray-400 disabled:opacity-70 disabled:cursor-not-allowed ${selectedOption ? 'animate-pulse-btn' : ''}`}>
+                        {isSubmitting ? 'Vérification...' : 'Soumettre'}
                       </button>
                     )}
                 </div>
