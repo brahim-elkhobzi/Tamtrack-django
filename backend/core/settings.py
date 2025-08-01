@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     'userauths',
     'api',
     'quiz',
-    'profiles',
+    "profiles",
 
 ]
 
