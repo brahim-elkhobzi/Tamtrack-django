@@ -1,4 +1,5 @@
 from django.db import models
+from userauths.models import User
 
 class Topic(models.Model):
     name = models.CharField(max_length=255)
@@ -15,3 +16,24 @@ class Question(models.Model):
     def __str__(self):
         return self.question_text[:50]
 
+
+
+
+####     quiz      scores   ####
+class Score(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    topic = models.CharField(max_length=255)
+    score = models.PositiveIntegerField(default=0)
+    #recommendation = models.TextField(blank=True, null=True)
+
+
+    def __str__(self):
+        return f"Score de {self.user.email} sur '{self.topic}'"
+
+
+class Recommendation(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    text = models.TextField()
+
+    def __str__(self):
+        return f"Recommandation pour {self.user.email}: {self.text[:50]}..."

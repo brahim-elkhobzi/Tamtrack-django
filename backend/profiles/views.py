@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from quiz.models import Topic, Question
 from quiz import services as quiz_services
-from .models import UserScore
+from .models import UserScore   
 
 class SubmitAnswerView(APIView):
     permission_classes = [IsAuthenticated]
@@ -49,3 +49,8 @@ class SubmitAnswerView(APIView):
         except Exception as e:
             print(f"ERREUR DANS SubmitAnswerView: {e}")
             return Response({'error': 'Erreur interne du serveur.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+
+
+
+
