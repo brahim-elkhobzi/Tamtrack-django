@@ -9,7 +9,15 @@ from rest_framework.permissions import IsAuthenticated
 from . import services # Importer le fichier de services
 from .services import get_full_quiz_by_level
 
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from django.contrib.auth.decorators import login_required
+from .models import Score  , Recommendation
+from django.contrib.auth import get_user_model
 class TopicListView(APIView):
+
+    
     permission_classes = [IsAuthenticated] # S'assurer que l'utilisateur est connecté
 
     def get(self, request):
@@ -71,3 +79,46 @@ class FullQuizView(APIView):
         user_level = request.user.level
         full_quiz_data = get_full_quiz_by_level(user_level)
         return Response(full_quiz_data)
+    
+
+
+
+
+######        save data to MySQL    for score and recommendation        ######
+
+
+
+
+User = get_user_model()
+
+@api_view(['POST'])
+@login_required
+def save_profile(request):
+    try:
+        data = request.data
+        user = request.user
+
+        # Save or update scores
+        for item in data:
+            topic = item.get('topic')
+            score = item.get('score')
+            recommendation_text = item.get('recommendation')
+
+            # Save score
+            Score.objects.update_or_create(
+                user=user,
+                topic=topic,
+                defaults={'score': score}
+            )
+
+        # Save or update recommendation
+        Recommendation.objects.update_or_create(
+            user=user,
+            defaults={'text': recommendation_text}
+        )
+
+        return Response({"message": "Scores and recommendation saved successfully!"}, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+

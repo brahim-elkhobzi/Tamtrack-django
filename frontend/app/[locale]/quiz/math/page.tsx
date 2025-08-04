@@ -1,11 +1,9 @@
-
 "use client";
 import { useEffect, useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/app/context/AuthContext';
 import api from '@/utils/axios';
 
-// --- Interfaces pour la structure des données ---
 interface Question {
   id: string;
   question: string;
@@ -27,21 +25,30 @@ type ScoresByTopic = {
   [topic: string]: { score: number; total: number };
 };
 
-// --- Composant pour l'arrière-plan stylisé ---
 const AnimatedBackground = () => (
   <div className="fixed top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
-    <div className="shape w-20 h-20 bg-white/10 rounded-full absolute top-[10%] left-[10%] animate-float"></div>
-    <div className="shape w-16 h-16 bg-white/10 rounded-lg absolute top-[20%] right-[10%] animate-float" style={{ animationDelay: '2s' }}></div>
-    <div className="shape w-12 h-12 bg-white/10 absolute bottom-[10%] left-[20%] animate-float" style={{ animationDelay: '4s', clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)' }}></div>
+    {[...Array(3)].map((_, i) => (
+      <div
+        key={i}
+        className="shape bg-white/10 rounded-full absolute animate-float"
+        style={{
+          width: i === 0 ? '5rem' : i === 1 ? '4rem' : '3rem',
+          height: i === 0 ? '5rem' : i === 1 ? '4rem' : '3rem',
+          top: i === 0 ? '10%' : i === 1 ? '20%' : 'auto',
+          left: i === 0 ? '10%' : i === 1 ? 'auto' : '20%',
+          right: i === 1 ? '10%' : 'auto',
+          bottom: i === 2 ? '10%' : 'auto',
+          animationDelay: `${i + 1 * 2}s`,
+          clipPath: i === 2 ? 'polygon(50% 0%, 0% 100%, 100% 100%)' : 'none',
+        }}
+      ></div>
+    ))}
   </div>
 );
 
-// --- LE COMPOSANT DE LA PAGE PRINCIPALE DU QUIZ ---
 export default function MathGuidedQuizPage() {
   const router = useRouter();
   const { user, loading: authLoading } = useAuth();
-
-  // --- États React pour gérer toute la logique du quiz ---
   const [fullQuizData, setFullQuizData] = useState<FullQuizData | null>(null);
   const [currentTopicIndex, setCurrentTopicIndex] = useState(0);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -51,9 +58,8 @@ export default function MathGuidedQuizPage() {
   const [isQuizFinished, setIsQuizFinished] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  // --- État pour empêcher la double soumission ---
   const [hasSubmittedCurrentQuestion, setHasSubmittedCurrentQuestion] = useState(false);
+
   const topics = useMemo(() => fullQuizData ? Object.keys(fullQuizData) : [], [fullQuizData]);
 
   useEffect(() => {
@@ -63,19 +69,18 @@ export default function MathGuidedQuizPage() {
   }, [currentTopicIndex, currentQuestionIndex]);
 
   useEffect(() => {
-    if (authLoading || !user) return;
-    fetchFullQuiz();
+    if (!authLoading && user) fetchFullQuiz();
   }, [authLoading, user]);
 
   const fetchFullQuiz = async () => {
     try {
-      const response = await api.get('/quiz/get-full-quiz/');
-      const data = response.data;
+      const { data } = await api.get('/quiz/get-full-quiz/');
       if (data && typeof data === 'object' && Object.keys(data).length > 0) {
         setFullQuizData(data);
-        const fetchedTopics = Object.keys(data);
-        const initialScores: ScoresByTopic = {};
-        fetchedTopics.forEach(topic => { initialScores[topic] = { score: 0, total: 0 }; });
+        const initialScores = Object.keys(data).reduce((acc, topic) => {
+          acc[topic] = { score: 0, total: 0 };
+          return acc;
+        }, {} as ScoresByTopic);
         setScoresByTopic(initialScores);
       } else {
         setFullQuizData({});
@@ -87,17 +92,16 @@ export default function MathGuidedQuizPage() {
     }
   };
 
-  // Fonction qui s'occupe de la sauvegarde finale
   const saveFinalScores = async () => {
     try {
-      for (const [topic, scoreData] of Object.entries(scoresByTopic)) {
+      await Promise.all(Object.entries(scoresByTopic).map(async ([topic, scoreData]) => {
         const percentage = scoreData.total > 0 ? (scoreData.score / scoreData.total) * 100 : 0;
-        await api.post('/api/save-profile/', {
+        await api.post('/api/quiz/save_profile/', {
           topic,
           score: percentage,
           recommendation: `Recommendation based on a score of ${percentage}%`
         });
-      }
+      }));
       console.log("Scores finaux enregistrés avec succès dans la base de données !");
     } catch (error) {
       console.error("Erreur lors de la sauvegarde finale des scores:", error);
@@ -106,6 +110,7 @@ export default function MathGuidedQuizPage() {
 
   const handleAnswerSubmit = async () => {
     if (!selectedOption || !fullQuizData || isSubmitting || hasSubmittedCurrentQuestion) return;
+
     setIsSubmitting(true);
     setHasSubmittedCurrentQuestion(true);
 
@@ -113,20 +118,18 @@ export default function MathGuidedQuizPage() {
     const currentQuestion = fullQuizData[currentTopic][currentQuestionIndex];
 
     try {
-      const urlToCall = `/profiles/submit-answer/${encodeURIComponent(currentTopic)}/${encodeURIComponent(currentQuestion.question)}/`;
-      const response = await api.post(urlToCall, { answer: selectedOption });
-      setFeedback(response.data);
+      const response = await api.post(
+        `/profiles/submit-answer/${encodeURIComponent(currentTopic)}/${encodeURIComponent(currentQuestion.question)}/`,
+        { answer: selectedOption }
+      );
 
-      setScoresByTopic(prevScores => {
-        const newScores = { ...prevScores };
-        const topicScores = newScores[currentTopic];
-        topicScores.total++;
-        if (response.data.is_correct) {
-          topicScores.score++;
-        }
+      setFeedback(response.data);
+      setScoresByTopic(prev => {
+        const newScores = { ...prev };
+        newScores[currentTopic].total++;
+        if (response.data.is_correct) newScores[currentTopic].score++;
         return newScores;
       });
-
     } catch (error) {
       console.error("Erreur lors de la soumission :", error);
       setHasSubmittedCurrentQuestion(false);
@@ -138,7 +141,9 @@ export default function MathGuidedQuizPage() {
   const handleNext = () => {
     setFeedback(null);
     setSelectedOption(null);
+
     if (!fullQuizData) return;
+
     const currentTopic = topics[currentTopicIndex];
     const questionsInCurrentTopic = fullQuizData[currentTopic];
 
@@ -148,7 +153,6 @@ export default function MathGuidedQuizPage() {
       setCurrentTopicIndex(prev => prev + 1);
       setCurrentQuestionIndex(0);
     } else {
-      console.log("Quiz terminé ! Affichage des résultats et sauvegarde en arrière-plan...");
       setIsQuizFinished(true);
       saveFinalScores();
     }
@@ -174,18 +178,13 @@ export default function MathGuidedQuizPage() {
                     <span>{scoreData.score} / {scoreData.total}</span>
                   </div>
                   <div className="w-full bg-slate-200 rounded-full h-2 mt-2">
-                    <div
-                      className="bg-gradient-to-r from-green-400 to-blue-500 h-2 rounded-full"
-                      style={{ width: `${percentage}%`, transition: 'width 1s ease-out' }}
-                    ></div>
+                    <div className="bg-gradient-to-r from-green-400 to-blue-500 h-2 rounded-full" style={{ width: `${percentage}%`, transition: 'width 1s ease-out' }}></div>
                   </div>
                 </div>
               );
             })}
           </div>
-          <button
-            onClick={() => router.push('/profile')}
-            className="w-full mt-8 text-white font-semibold py-3 px-6 rounded-xl text-lg bg-gradient-to-r from-indigo-500 to-purple-600 hover:opacity-90">
+          <button onClick={() => router.push('/profile')} className="w-full mt-8 text-white font-semibold py-3 px-6 rounded-xl text-lg bg-gradient-to-r from-indigo-500 to-purple-600 hover:opacity-90">
             Voir mon Profil et mes Recommandations
           </button>
         </div>
@@ -195,6 +194,7 @@ export default function MathGuidedQuizPage() {
 
   const currentTopic = topics[currentTopicIndex];
   const currentQuestion = fullQuizData?.[currentTopic]?.[currentQuestionIndex];
+
   if (!currentQuestion) {
     return <div className="gradient-bg min-h-screen flex items-center justify-center text-white">Chargement...</div>;
   }
@@ -210,67 +210,43 @@ export default function MathGuidedQuizPage() {
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">Parcours : {currentTopic}</h1>
           <p className="text-gray-600">Question {currentQuestionIndex + 1} sur {totalQuestionsInTopic}</p>
         </header>
-
         <div className="w-full bg-slate-200 rounded-full h-2.5 mb-8">
           <div className="bg-gradient-to-r from-indigo-500 to-purple-600 h-2.5 rounded-full" style={{ width: `${progressPercent}%`, transition: 'width 0.5s ease-out' }}></div>
         </div>
-
         {feedback && (
           <div className={`animate-slideIn mb-6 p-4 rounded-xl border-l-4 ${feedback.is_correct ? 'bg-green-50 border-green-400 text-green-700' : 'bg-red-50 border-red-400 text-red-700'}`}>
             <h3 className="font-bold">{feedback.is_correct ? 'Correct !' : 'Incorrect.'}</h3>
             <p className="text-sm mt-1">{feedback.explanation}</p>
           </div>
         )}
-
         <div className="mb-8">
           <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl p-6 border border-indigo-100">
-            <h2 className="text-lg sm:text-xl font-semibold text-gray-800 leading-relaxed">
-              {currentQuestion.question}
-            </h2>
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-800 leading-relaxed">{currentQuestion.question}</h2>
           </div>
         </div>
-
         <div className="space-y-4 mb-8">
           {currentQuestion.options.map((optionText, index) => {
             const isSelected = selectedOption === optionText;
             const isCorrect = feedback?.correct_answer === optionText;
             const wasWronglySelected = isSelected && !isCorrect && feedback;
-
             let cardStyle = "border-gray-300 hover:border-indigo-400";
-            if (feedback) {
-              if (isCorrect) cardStyle = "border-green-500 bg-green-50 font-bold";
-              else if (wasWronglySelected) cardStyle = "border-red-500 bg-red-50";
-              else cardStyle = "border-gray-200 text-gray-400";
-            } else if (isSelected) {
-              cardStyle = "border-indigo-500 bg-indigo-50 ring-2 ring-indigo-300";
-            }
+            if (feedback) cardStyle = isCorrect ? "border-green-500 bg-green-50 font-bold" : wasWronglySelected ? "border-red-500 bg-red-50" : "border-gray-200 text-gray-400";
+            else if (isSelected) cardStyle = "border-indigo-500 bg-indigo-50 ring-2 ring-indigo-300";
+
             return (
-              <div
-                key={index}
-                onClick={() => !feedback && setSelectedOption(optionText)}
-                className={`block cursor-pointer bg-white rounded-xl p-4 border-2 transition-all duration-200 ${cardStyle}`}
-              >
+              <div key={index} onClick={() => !feedback && setSelectedOption(optionText)} className={`block cursor-pointer bg-white rounded-xl p-4 border-2 transition-all duration-200 ${cardStyle}`}>
                 <span className="font-medium text-gray-700">{optionText}</span>
               </div>
             );
           })}
         </div>
-
         <div className="h-20 flex items-center">
           {feedback ? (
-            <button
-              onClick={handleNext}
-              disabled={isSubmitting}
-              className="w-full text-white font-semibold py-3 px-6 rounded-xl text-lg bg-gradient-to-r from-indigo-500 to-purple-600 hover:opacity-90 disabled:bg-gray-400"
-            >
+            <button onClick={handleNext} disabled={isSubmitting} className="w-full text-white font-semibold py-3 px-6 rounded-xl text-lg bg-gradient-to-r from-indigo-500 to-purple-600 hover:opacity-90 disabled:bg-gray-400">
               Continuer
             </button>
           ) : (
-            <button
-              onClick={handleAnswerSubmit}
-              disabled={!selectedOption || isSubmitting || hasSubmittedCurrentQuestion}
-              className={`gradient-btn-green w-full text-black font-semibold py-3 px-6 rounded-xl text-lg disabled:bg-gray-400 disabled:opacity-70 disabled:cursor-not-allowed ${selectedOption && !hasSubmittedCurrentQuestion ? 'animate-pulse-btn' : ''}`}
-            >
+            <button onClick={handleAnswerSubmit} disabled={!selectedOption || isSubmitting || hasSubmittedCurrentQuestion} className={`gradient-btn-green w-full text-black font-semibold py-3 px-6 rounded-xl text-lg disabled:bg-gray-400 disabled:opacity-70 disabled:cursor-not-allowed ${selectedOption && !hasSubmittedCurrentQuestion ? 'animate-pulse-btn' : ''}`}>
               {isSubmitting ? 'Vérification...' : 'Soumettre'}
             </button>
           )}

@@ -3,7 +3,7 @@ from django.urls import path
 from .views import TopicListView, QuizQuestionsView, SubmitAnswerView
 
 from .views import FullQuizView
-from .views import SubmitAnswerView
+from .views import SubmitAnswerView ,save_profile 
 
 urlpatterns = [
     # API pour obtenir la liste des thèmes de l'utilisateur
@@ -21,6 +21,7 @@ urlpatterns = [
 
 
     path('get-full-quiz/', FullQuizView.as_view(), name='get-full-quiz'),
-    
-    
+    path('submit-answer/<str:topic_name>/<path:question_text>/', SubmitAnswerView.as_view(), name='submit-answer'),
+
+    path('save_profile/', save_profile, name='save-profile'),
 ]

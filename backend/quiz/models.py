@@ -24,7 +24,7 @@ class Score(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     topic = models.CharField(max_length=255)
     score = models.PositiveIntegerField(default=0)
-    #recommendation = models.TextField(blank=True, null=True)
+    recommendation = models.TextField(blank=True, null=True)
 
 
     def __str__(self):
@@ -32,7 +32,7 @@ class Score(models.Model):
 
 
 class Recommendation(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField()
 
     def __str__(self):
