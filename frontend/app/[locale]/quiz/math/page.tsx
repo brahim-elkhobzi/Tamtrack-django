@@ -92,51 +92,61 @@ export default function MathGuidedQuizPage() {
     }
   };
 
-  const saveFinalScores = async () => {
+    const saveFinalScores = async () => {
     try {
-      await Promise.all(Object.entries(scoresByTopic).map(async ([topic, scoreData]) => {
-        const percentage = scoreData.total > 0 ? (scoreData.score / scoreData.total) * 100 : 0;
-        await api.post('/api/quiz/save_profile/', {
-          topic,
-          score: percentage,
-          recommendation: `Recommendation based on a score of ${percentage}%`
+        // Prepare the data to send to the server
+        const scoresData = Object.entries(scoresByTopic).map(([topic, scoreData]) => {
+        const percentage = scoreData.score ;
+        alert(`Score pour ${topic}: ${percentage})`);
+        return {
+            topic,
+            score: percentage,
+            recommendation: `Recommendation based on a score of ${percentage} for ${topic}.`
+        };
         });
-      }));
-      console.log("Scores finaux enregistrés avec succès dans la base de données !");
+
+        // Send the data to the server
+        await api.post('/api/quiz/save_profile/', scoresData);
+
+        console.log("Scores finaux enregistrés avec succès dans la base de données !");
     } catch (error) {
-      console.error("Erreur lors de la sauvegarde finale des scores:", error);
+        console.error("Erreur lors de la sauvegarde finale des scores:", error);
     }
-  };
+    };
 
-  const handleAnswerSubmit = async () => {
-    if (!selectedOption || !fullQuizData || isSubmitting || hasSubmittedCurrentQuestion) return;
 
-    setIsSubmitting(true);
-    setHasSubmittedCurrentQuestion(true);
+    const handleAnswerSubmit = async () => {
+        if (!selectedOption || !fullQuizData || isSubmitting || hasSubmittedCurrentQuestion) return;
 
-    const currentTopic = topics[currentTopicIndex];
-    const currentQuestion = fullQuizData[currentTopic][currentQuestionIndex];
+        setIsSubmitting(true);
+        setHasSubmittedCurrentQuestion(true);
 
-    try {
-      const response = await api.post(
-        `/profiles/submit-answer/${encodeURIComponent(currentTopic)}/${encodeURIComponent(currentQuestion.question)}/`,
-        { answer: selectedOption }
-      );
+        const currentTopic = topics[currentTopicIndex];
+        const currentQuestion = fullQuizData[currentTopic][currentQuestionIndex];
 
-      setFeedback(response.data);
-      setScoresByTopic(prev => {
-        const newScores = { ...prev };
-        newScores[currentTopic].total++;
-        if (response.data.is_correct) newScores[currentTopic].score++;
-        return newScores;
-      });
-    } catch (error) {
-      console.error("Erreur lors de la soumission :", error);
-      setHasSubmittedCurrentQuestion(false);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+        try {
+        const response = await api.post(
+            `/profiles/submit-answer/${encodeURIComponent(currentTopic)}/${encodeURIComponent(currentQuestion.question)}/`,
+            { answer: selectedOption }
+        );
+
+        setFeedback(response.data);
+        setScoresByTopic(prev => {
+            const newScores = { ...prev };
+            newScores[currentTopic].total++;
+            if (response.data.is_correct) {
+                newScores[currentTopic].score++;
+                alert(`Score mis à jour pour ${currentTopic}: ${newScores[currentTopic].score}/${newScores[currentTopic].total}`);
+            }
+            return newScores;
+        });
+        } catch (error) {
+        console.error("Erreur lors de la soumission :", error);
+        setHasSubmittedCurrentQuestion(false);
+        } finally {
+        setIsSubmitting(false);
+        }
+    };
 
   const handleNext = () => {
     setFeedback(null);

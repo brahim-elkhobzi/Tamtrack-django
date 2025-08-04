@@ -18,7 +18,6 @@ import UserProfiles from '../components/profile';
 import Testimonials from '../components/Testimonials';
 import Footer from '../components/Footer';
 import TamTrackDNA from '../components/adn';
-import LlamaChat from '../components/LlamaChat';
 
 
 
@@ -36,7 +35,7 @@ export default function HomePage() {
       <TamTrackDNA />
       <Footer />
 
-    <LlamaChat />
+    
     </div>
   );
 }
