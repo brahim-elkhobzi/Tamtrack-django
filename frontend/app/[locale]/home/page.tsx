@@ -1,14 +1,21 @@
 // File: [locale]/home/page.js
+
 import React from 'react';
+import Link from 'next/link'; // L'import est bien là
+
+// Import des composants
 import Sidebar from './components/Sidebar';
 import DashboardHeader from './components/DashboardHeader';
 import InfoCard from './components/InfoCard';
-import { FiAward, FiCalendar, FiCpu, FiTrendingUp, FiBookOpen, FiClipboard, FiMessageCircle, FiBarChart2 } from 'react-icons/fi';
+
+// Import des icônes
+import { FiAward, FiCalendar, FiCpu, FiTrendingUp } from 'react-icons/fi';
 
 const HomePage = () => {
   return (
     <div className="flex bg-[#f4f6f9] min-h-screen">
-      <Sidebar activePage="home" />
+      {/* CORRECTION : La valeur doit correspondre au texte dans la Sidebar */}
+      <Sidebar activePage="Accueil" />
 
       <main className="flex-1 p-8">
         <DashboardHeader />
@@ -24,6 +31,7 @@ const HomePage = () => {
           
           {/* Colonne de contenu (2/3 de la largeur) */}
           <div className="lg:col-span-2 space-y-8">
+            {/* CORRECTION : p-43 n'existe pas, remplacé par p-8 pour plus d'espace */}
             <div className="bg-white p-43 rounded-xl shadow-md">
               <h2 className="text-2xl font-bold text-[#0a2540]">Votre progression aujourd'hui</h2>
               <div className="flex items-center space-x-4 my-4">
@@ -36,13 +44,22 @@ const HomePage = () => {
               </div>
             </div>
 
-            <div className="bg-white p-6 rounded-xl shadow-md space-y-4">
-              <h2 className="text-2xl font-bold text-[#0a2540] mb-4 ">Actions rapides</h2>
+            {/* MODIFICATION : Les boutons sont maintenant des liens */}
+            <div className="bg-white p-6 rounded-xl shadow-md">
+              <h2 className="text-2xl font-bold text-[#0a2540] mb-4">Actions rapides</h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <button className="flex items-center justify-center space-x-2 bg-white p-4 rounded-xl shadow-md hover:bg-gray-50 transition-colors"><span>Continuer le cours</span></button>
-                <button className="flex items-center justify-center space-x-2 bg-white p-4 rounded-xl shadow-md hover:bg-gray-50 transition-colors"><span>Faire un quiz</span></button>
-                <button className="flex items-center justify-center space-x-2 bg-white p-4 rounded-xl shadow-md hover:bg-gray-50 transition-colors"><span>Parler à l'IA</span></button>
-                <button className="flex items-center justify-center space-x-2 bg-white p-4 rounded-xl shadow-md hover:bg-gray-50 transition-colors"><span>Voir ma progression</span></button>
+                <Link href="/fr/cours/dernier" className="flex items-center justify-center space-x-2 bg-white p-4 rounded-xl shadow-md hover:bg-gray-50 transition-colors">
+                    <span>Continuer le cours</span>
+                </Link>
+                <Link href="/fr/quiz" className="flex items-center justify-center space-x-2 bg-white p-4 rounded-xl shadow-md hover:bg-gray-50 transition-colors">
+                    <span>Faire un quiz</span>
+                </Link>
+                <Link href="/fr/chat" className="flex items-center justify-center space-x-2 bg-white p-4 rounded-xl shadow-md hover:bg-gray-50 transition-colors">
+                    <span>Parler à l'IA</span>
+                </Link>
+                <Link href="/fr/progression" className="flex items-center justify-center space-x-2 bg-white p-4 rounded-xl shadow-md hover:bg-gray-50 transition-colors">
+                    <span>Voir ma progression</span>
+                </Link>
               </div>
             </div>
           </div>
