@@ -54,7 +54,7 @@ const HomePage = () => {
                 <Link href="/fr/quiz" className="flex items-center justify-center space-x-2 bg-white p-4 rounded-xl shadow-md hover:bg-gray-50 transition-colors">
                     <span>Faire un quiz</span>
                 </Link>
-                <Link href="/fr/chat" className="flex items-center justify-center space-x-2 bg-white p-4 rounded-xl shadow-md hover:bg-gray-50 transition-colors">
+                <Link href="/fr/math-tutor" className="flex items-center justify-center space-x-2 bg-white p-4 rounded-xl shadow-md hover:bg-gray-50 transition-colors">
                     <span>Parler à l'IA</span>
                 </Link>
                 <Link href="/fr/progression" className="flex items-center justify-center space-x-2 bg-white p-4 rounded-xl shadow-md hover:bg-gray-50 transition-colors">

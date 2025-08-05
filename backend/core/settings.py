@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'quiz',
     "profiles",
     'chat',
+    'solve',  # Assurez-vous que l'application solve est ajoutée ici
 
 ]
 
