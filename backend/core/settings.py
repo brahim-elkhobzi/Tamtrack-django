@@ -55,7 +55,8 @@ INSTALLED_APPS = [
     "profiles",
     'chat',
     'solve',  
-    'generat_cours',  # Assurez-vous que cette application est ajoutée
+    'generat_cours',
+    "Tutoring",
 
 ]
 

@@ -1,0 +1,28 @@
+/* app/[locale]/generate-course/CourseStyles.module.css */
+.courseHeader { text-align: center; margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 2px solid rgba(255, 255, 255, 0.15); }
+.courseTitle { font-size: 2.8rem; font-weight: 700; color: #ffffff; margin-bottom: 1rem; }
+.courseLevel { display: inline-block; background: linear-gradient(135deg, #ff6b6b, #ee5a24, #ff9068); color: white; padding: 0.8rem 2rem; border-radius: 50px; font-size: 1rem; font-weight: 700; text-transform: uppercase; }
+.courseContentBody { color: #e2e8f0; line-height: 1.9; font-size: 1.1rem; animation: contentFade 0.8s ease-out; }
+@keyframes contentFade { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.courseContentBody h2 { font-size: 1.8rem; color: #4fc3f7; border-bottom: 2px solid #4fc3f7; padding-bottom: 10px; margin: 40px 0 20px 0; font-weight: 700; }
+.courseContentBody h3 { font-size: 1.4rem; color: #667eea; margin: 25px 0 15px 0; font-weight: 600; }
+.mathEnv { padding: 18px; margin: 24px 0; border-radius: 0 8px 8px 0; border-left: 4px solid; position: relative; }
+.mathEnvTitle { font-weight: 700; margin-bottom: 12px; display: block; font-size: 1.1em; }
+.mathEnvContent { line-height: 1.8; }
+.numbered::before { counter-increment: custom-counter; content: "Théorème " counter(custom-counter) "."; font-weight: bold; margin-bottom: 10px; display: block; color: var(--color, white); } /* Generic counter */
+.definition { background: rgba(102, 126, 234, 0.1); border-color: #667eea; } .definition .mathEnvTitle { color: #667eea; }
+.theorem { background: rgba(104, 211, 145, 0.1); border-color: #68d391; } .theorem .mathEnvTitle { color: #68d391; }
+.proof { background: rgba(226, 232, 240, 0.05); border-color: #9ca3af; font-style: italic; } .proof .mathEnvTitle { color: #9ca3af; font-style: normal; }
+.example { background: rgba(239, 68, 68, 0.08); border-color: #ef4444; } .example .mathEnvTitle { color: #ef4444; }
+.remark { background: rgba(156, 163, 175, 0.1); border-color: #9ca3af; } .remark .mathEnvTitle { color: #9ca3af; }
+.asciiArt { font-family: 'Courier New', monospace; background-color: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; border: 1px solid #4a5568; white-space: pre; overflow-x: auto; font-size: 0.9em; line-height: 1.4; }
+.loadingContainer { text-align: center; padding: 3rem 0; }
+.mathLoading { position: relative; width: 120px; height: 120px; margin: 0 auto 2rem; }
+.loadingCircle { position: absolute; width: 100%; height: 100%; border: 3px solid rgba(255, 255, 255, 0.1); border-radius: 50%; }
+.loadingCircle:nth-child(1) { border-top-color: #ff6b6b; animation: rotate 2s linear infinite; }
+.loadingCircle:nth-child(2) { border-right-color: #4ecdc4; animation: rotate 2s linear infinite reverse -0.5s; }
+.loadingCircle:nth-child(3) { border-bottom-color: #45b7d1; animation: rotate 2s linear infinite -1s; }
+.loadingSymbol { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 2rem; color: #ffffff; animation: symbolPulse 1.5s ease-in-out infinite; }
+.loadingText { font-size: 1.2rem; }
+@keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes symbolPulse { 0%, 100% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -50%) scale(1.2); } }

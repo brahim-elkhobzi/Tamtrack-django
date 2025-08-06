@@ -1,57 +1,33 @@
-// // File: [locale]/home/components/DashboardHeader.js
-// import React from 'react';
-// import { FiSearch, FiBell, FiSun } from 'react-icons/fi';
-// import LanguageSwitcher from '@/app/components/LanguageSwitcher';
+"use client";
 
-// const DashboardHeader = () => {
-//   return (
-//     <header className="flex justify-between items-center mb-10">
-//       <div className="relative w-2/5">
-//         <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-//         <input type="text" placeholder="Rechercher un module, une capsule, un événement..." className="w-full pl-12 pr-4 py-2 border rounded-full bg-white shadow-sm" />
-//       </div>
-//       <div className="flex items-center space-x-6 text-gray-700 font-medium">
-//         <button>Français ⌄</button>
-//         <button className="relative">
-//           <FiBell size={22} />
-//           <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-orange-500 rounded-full border-2 border-[#f4f6f9]"></span>
-//         </button>
-//         <button className="flex items-center p-0.5 border-2 border-gray-400 rounded-full">
-//           <FiSun size={20} className="text-white bg-blue-500 rounded-full p-0.5" />
-//         </button>
-//         <button>Salma ⌄</button>
-//       </div>
-//     </header>
-//   );
-// };
-
-// export default DashboardHeader;
-// File: [locale]/home/components/DashboardHeader.js
-"use client"
 import React from 'react';
-import { FiSearch, FiBell, FiSun } from 'react-icons/fi';
-// L'import de votre composant pour changer de langue
+import { FiSearch, FiBell } from 'react-icons/fi';
 import LanguageSwitcher from '@/app/components/LanguageSwitcher';
+// 1. IMPORTER LE NOUVEAU COMPOSANT
+import DarkModeToggle from '@/app/components/DarkModeToggle';
 
 const DashboardHeader = () => {
   return (
     <header className="flex justify-between items-center mb-10">
       <div className="relative w-2/5">
-        <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-        <input type="text" placeholder="Rechercher un module, une capsule, un événement..." className="w-full pl-12 pr-4 py-2 border rounded-full bg-white shadow-sm" />
+        <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500" />
+        <input 
+          type="text" 
+          placeholder="Rechercher un module..." 
+          className="w-full pl-12 pr-4 py-2 border rounded-full bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200 shadow-sm"
+        />
       </div>
-      <div className="flex items-center space-x-6 text-gray-700 font-medium">
-        
-        {/* MODIFICATION : Le bouton statique est remplacé par le composant dynamique */}
+      <div className="flex items-center space-x-4 text-gray-700 dark:text-gray-300 font-medium">
         <LanguageSwitcher />
 
-        <button className="relative">
+        <button className="relative p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
           <FiBell size={22} />
-          <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-orange-500 rounded-full border-2 border-[#f4f6f9]"></span>
+          <span className="absolute -top-0 -right-0 w-2.5 h-2.5 bg-orange-500 rounded-full border-2 border-white dark:border-gray-800"></span>
         </button>
-        <button className="flex items-center p-0.5 border-2 border-gray-400 rounded-full">
-          <FiSun size={20} className="text-white bg-blue-500 rounded-full p-0.5" />
-        </button>
+        
+        {/* 2. UTILISER LE COMPOSANT ICI */}
+        <DarkModeToggle />
+        
         <button>Salma ⌄</button>
       </div>
     </header>
