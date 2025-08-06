@@ -9,6 +9,5 @@ urlpatterns = [
     path('quiz/', include('quiz.urls')),
     path('profiles/', include('profiles.urls')),
     path('solve/', include("solve.urls")),
-
-    # path('chat/', GroqLlamaView.as_view(), name='groq-llama-chat'),
+    path('generate-course/', include('generat_cours.urls')),
 ]
