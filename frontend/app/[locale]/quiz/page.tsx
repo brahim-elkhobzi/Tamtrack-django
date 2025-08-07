@@ -36,6 +36,13 @@ const modulesData: Module[] = [
     icon: '/icons/svt-icon.svg',
     color: 'green',
   },
+    {
+    name: 'cours',
+    description: 'Plongez dans les sciences de la vie et de la Terre et comprenez le monde qui nous entoure.',
+    href: '/generate-course',
+    icon: '/icons/svt-icon.svg',
+    color: 'green',
+  },
 ];
 
 export default function SelectModulePage() {

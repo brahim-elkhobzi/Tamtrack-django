@@ -2,8 +2,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-# ... (imports) ...
-# Assurez-vous que le client est bien défini et chargé au démarrage du module
 from django.conf import settings
 from groq import Groq
 
@@ -23,7 +21,7 @@ class TutorChatView(APIView):
         if not groq_client:
             return Response({"error": "Service IA non configuré."}, status=503)
 
-        # Ajouter une vérification pour s'assurer que 'prompt' n'est pas None
+        
         if prompt is None:
             return Response({"error": "Le champ 'prompt' est requis et ne peut être nul."}, status=400)
         
@@ -42,20 +40,17 @@ class TutorChatView(APIView):
         try:
             chat_completion = groq_client.chat.completions.create(
                 messages=messages,
-                model="llama3-8b-8192", # <- ATTENTION, assurez-vous que ce modèle est correct
+                model="llama3-8b-8192", 
             )
             response = chat_completion.choices[0].message.content
             return Response({'response': response}, status=200)
 
-        # ==========================================================
-        #           MODIFICATION IMPORTANTE POUR LE DEBUG
-        # ==========================================================
+       
         except Exception as e:
-            # Affiche l'erreur DÉTAILLÉE dans la console où tourne Django
+
             print(f"--- ERREUR LORS DE L'APPEL A GROQ ---")
             print(f"Type d'erreur: {type(e).__name__}")
             print(f"Message d'erreur: {e}")
             print(f"--- FIN DE L'ERREUR ---")
             
-            # Renvoie une erreur plus utile au client (comme Postman)
             return Response({"error": "Erreur interne de l'API IA", "details": str(e)}, status=500)

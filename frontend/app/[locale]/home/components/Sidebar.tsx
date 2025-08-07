@@ -20,6 +20,7 @@ const navItems = [
     { id: 'agenda', label: "Mon Agenda", href: "/fr/agenda" },
     { id: 'notifications', label: "Notifications", href: "/fr/notifications" },
     { id: 'parametres', label: "Paramètres", href: "/fr/parametres" },
+    { id : "math", label: "math" , href:"/fr/quiz"}
 ];
 
 // Il n'est plus nécessaire de passer la prop "activePage", on va la déduire de l'URL
