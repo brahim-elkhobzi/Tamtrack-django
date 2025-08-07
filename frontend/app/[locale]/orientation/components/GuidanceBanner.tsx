@@ -13,5 +13,4 @@ const GuidanceBanner: FC = () => (
         </div>
     </div>
 );
-
 export default GuidanceBanner;
