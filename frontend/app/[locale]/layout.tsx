@@ -12,8 +12,10 @@ export default function RootLayout({ children }) {
   return (
     <html suppressHydrationWarning>
       <body>
+        <AuthProvider>
         <NextIntlClientProvider>
         <Providers>{children}</Providers></NextIntlClientProvider>
+        </AuthProvider>
       </body>
     </html>
   )
