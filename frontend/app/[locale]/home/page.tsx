@@ -224,7 +224,7 @@ const QuickAccessSection: FC = () => {
 const HomePage: FC = () => {
   return (
     // On garde le layout principal flexible avec le fond adaptable au dark mode
-    <div className="flex bg-gray-100 dark:bg-gray-900 min-h-screen">
+    <div className="flex  min-h-screen">
       <Sidebar activePage="Accueil" />
 
       <main className="flex-1 p-6 md:p-8 overflow-y-auto">

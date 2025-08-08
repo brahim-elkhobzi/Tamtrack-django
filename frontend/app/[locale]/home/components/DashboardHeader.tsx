@@ -14,7 +14,7 @@ const DashboardHeader = () => {
         <input 
           type="text" 
           placeholder="Rechercher un module..." 
-          className="w-full pl-12 pr-4 py-2 border rounded-full bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200 shadow-sm"
+          className="w-full pl-12 pr-4 py-2 border rounded-full dark:border-gray-700 dark:text-gray-200 shadow-sm"
         />
       </div>
       <div className="flex items-center space-x-4 text-gray-700 dark:text-gray-300 font-medium">
