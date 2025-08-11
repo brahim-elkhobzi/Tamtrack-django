@@ -8,6 +8,9 @@ import TutorChat from './components/TutorChat';
 import TutorDashboard from './components/TutorDashboard';
 import { MathJaxContext } from "better-react-mathjax";
 
+
+import QuizSelection from './components/quiz'; 
+
 const TutoringPage: FC = () => {
     // La configuration MathJax est nécessaire pour afficher le LaTeX
     const mathjaxConfig = {
@@ -37,6 +40,7 @@ const TutoringPage: FC = () => {
                     ========================================================================
                     */}
                     <div className="mt-8 space-y-8 max-w-5xl mx-auto">
+                       <QuizSelection />
                        <TutorChat />
                        <TutorDashboard />
                     </div>

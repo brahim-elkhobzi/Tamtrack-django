@@ -14,7 +14,8 @@ export default function RootLayout({ children }) {
       <body>
         <AuthProvider>
         <NextIntlClientProvider>
-        <Providers>{children}</Providers></NextIntlClientProvider>
+        <Providers>{children}</Providers>
+        </NextIntlClientProvider>
         </AuthProvider>
       </body>
     </html>
