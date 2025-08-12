@@ -6,12 +6,10 @@ from .views import FullQuizView
 from .views import SubmitAnswerView ,save_profile 
 
 urlpatterns = [
-    # API pour obtenir la liste des thèmes de l'utilisateur
-    # GET /api/quiz/topics/
+    
     path('topics/', TopicListView.as_view(), name='topic-list'),
 
-    # API pour obtenir les questions pour un thème spécifique
-    # GET /api/quiz/questions/Ensembles de nombres/
+    
     path('questions/<str:topic_name>/', QuizQuestionsView.as_view(), name='quiz-questions'),
 
 

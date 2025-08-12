@@ -9,7 +9,6 @@ from rest_framework.permissions import IsAuthenticated
 from . import services
 from .quiz_data import tronc_commun, premier_bac, deuxieme_bac
 
-# Dictionnaire pour mapper le niveau de l'utilisateur au bon fichier de données
 LEVEL_DATA_MAP = {
     "tronc commun": tronc_commun.questions_by_topic,
     "premier bac": premier_bac.questions_by_topic,
@@ -28,7 +27,6 @@ def get_topics_for_level(level: str):
     
     questions_data = LEVEL_DATA_MAP[level]
     
-    # On renvoie juste les clés du dictionnaire, qui sont les noms des thèmes
     return list(questions_data.keys())
 
 
@@ -42,25 +40,22 @@ def get_quiz_questions(level: str, topic: str, count: int = 10):
 
     questions_data = LEVEL_DATA_MAP[level]
     
-    # Vérifier si le thème existe pour ce niveau
     if topic not in questions_data:
         return []
 
     all_questions = questions_data[topic]
     
-    # Mélanger et sélectionner le nombre de questions demandé
     random.shuffle(all_questions)
     
     questions_to_return = all_questions[:count]
     
-    # Préparer les données pour le frontend : ne jamais envoyer la bonne réponse
     sanitized_questions = []
     for q in questions_to_return:
-        # Copier pour ne pas modifier l'original
+
         question_copy = q.copy() 
-        # On supprime la réponse correcte
+        
         del question_copy['correct'] 
-        # On peut aussi mélanger les options ici si on le souhaite
+        
         random.shuffle(question_copy['options'])
         sanitized_questions.append(question_copy)
 
