@@ -20,8 +20,8 @@ class CustomUserManager(BaseUserManager):
         return user
 
     def create_user(self, email, password=None, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_active', True)
+        #extra_fields.setdefault('is_staff', True)
+        #extra_fields.setdefault('is_active', True)
         extra_fields.setdefault('is_superuser', False)
         return self._create_user(email, password,  **extra_fields)
 
@@ -43,6 +43,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         ('premier bac', 'Premier Bac'),
         ('deuxieme bac', 'Deuxième Bac'),
     )
+    
 
     email = models.EmailField(db_index=True, unique=True, max_length=254)
     first_name = models.CharField(max_length=150, blank=True, null=True)
@@ -50,6 +51,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     gender = models.CharField(max_length=50, blank=True, null=True)
     phone = models.CharField(max_length=50, blank=True, null=True)
     level =  models.CharField(max_length=50, blank=True, null=True)
+    role =  models.CharField(max_length=50, blank=True, null=True)
     address = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -65,5 +67,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = 'User'
         verbose_name_plural = 'Users'
+
+
 
 

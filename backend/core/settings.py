@@ -57,6 +57,10 @@ INSTALLED_APPS = [
     'solve',  
     'generat_cours',
     "Tutoring",
+    'students',
+    'teachers',
+    'parents',
+    
 
 ]
 

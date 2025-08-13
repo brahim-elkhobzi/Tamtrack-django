@@ -15,6 +15,7 @@ export default function RegisterPage() {
     phone: "",
     gender: "",
     level:"",
+    role : "",
   });
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -188,6 +189,25 @@ export default function RegisterPage() {
             <option value="tronc commun">tronc commun</option>
             <option value="premier bac">premier bac</option>
             <option value="deuxieme bac">deuxieme bac</option>
+          </select>
+        </div>
+
+
+        <div>
+          <label htmlFor="role" className="block text-sm font-medium text-gray-700">
+            role
+          </label>
+          <select
+            id="role"
+            name="role"
+            className="mt-1 text-gray-700 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            value={formData.role}
+            onChange={handleChange}
+          >
+            <option value="">select role </option>
+            <option value="etudiant">etudiant</option>
+            <option value="Parent">Parent</option>
+            <option value="Prof">Prof</option>
           </select>
         </div>
       </div>

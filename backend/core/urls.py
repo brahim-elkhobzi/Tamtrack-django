@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
@@ -27,4 +28,11 @@ urlpatterns = [
     path('solve/', include("solve.urls")),
     path('generat-cours/', include('generat_cours.urls')),
     path('Tutoring/', include('Tutoring.urls')),
+
+    
+    # URLs pour les profils
+    path('parents/', include('parents.urls')),
+    path('students/', include('students.urls')),
+    path('teachers/', include('teachers.urls')),
+    
 ]
