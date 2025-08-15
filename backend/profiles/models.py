@@ -8,6 +8,7 @@ class UserScore(models.Model):
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
     score  = models.PositiveIntegerField(default=0)
     recommendation = models.TextField(blank=True, null=True)
+
     class Meta:
         unique_together = ('user',)
     def __str__(self):
