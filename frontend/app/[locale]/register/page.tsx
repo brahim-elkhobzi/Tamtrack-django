@@ -1,229 +1,101 @@
+
 "use client";
-import { useState } from "react";
-import { useAuth } from "@/app/context/AuthContext";
+import { useState, FormEvent } from "react";
+import { useAuth } from "@/app/context/AuthContext"; // Ajustez le chemin si nécessaire
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { FaUserGraduate, FaChalkboardTeacher, FaUserFriends } from "react-icons/fa";
+
+type Role = 'student' | 'teacher' | 'parent';
 
 export default function RegisterPage() {
   const { register } = useAuth();
-  const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [selectedRole, setSelectedRole] = useState<Role | null>(null);
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
     first_name: "",
     last_name: "",
-    phone: "",
-    gender: "",
-    level:"",
-    role : "",
+    level: "", // Spécifique à l'étudiant
+    parent_email: "", // Spécifique à l'étudiant
+    role: "", // Spécifique à l'étudiant
+    subject_specialization: "", // Spécifique au professeur
   });
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    if (!selectedRole) return;
+
     setLoading(true);
     setError(null);
-
+    
     try {
-      await register(formData);
-      // Redirect is handled in the AuthContext after successful registration
+      await register(selectedRole, formData);
     } catch (err: any) {
-      setError(err.response?.data?.message || "Registration failed. Please try again.");
+      // Gère les erreurs renvoyées par Django REST Framework (400 Bad Request)
+      const backendError = err.response?.data;
+      if (typeof backendError === 'object') {
+        const errorMessages = Object.entries(backendError)
+          .map(([key, value]) => `${key}: ${Array.isArray(value) ? value.join(' ') : value}`)
+          .join(' ');
+        setError(errorMessages || "L'inscription a échoué. Veuillez vérifier vos données.");
+      } else {
+        setError("Une erreur inattendue est survenue.");
+      }
+    } finally {
       setLoading(false);
     }
   };
 
+  // --- VUE 1 : CHOIX DU RÔLE ---
+  if (!selectedRole) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-4">
+        <div className="text-center mb-10"><h2 className="text-3xl font-extrabold text-gray-900">Créez votre compte</h2><p className="mt-2 text-sm text-gray-600">Pour commencer, dites-nous qui vous êtes.</p></div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-4xl">
+          <RoleCard icon={<FaUserGraduate size={40} className="text-indigo-600"/>} title="Étudiant" description="Accédez à vos cours et suivez votre progression." onClick={() => setSelectedRole('student')}/>
+          <RoleCard icon={<FaUserFriends size={40} className="text-indigo-600"/>} title="Parent" description="Suivez les progrès de votre enfant." onClick={() => setSelectedRole('parent')}/>
+          <RoleCard icon={<FaChalkboardTeacher size={40} className="text-indigo-600"/>} title="Professeur" description="Supervisez vos élèves et leurs performances." onClick={() => setSelectedRole('teacher')}/>
+        </div>
+        <p className="mt-8 text-sm text-gray-600">Vous avez déjà un compte ?{' '}<Link href="/login" className="font-medium text-indigo-600 hover:text-indigo-500">Connectez-vous</Link></p>
+      </div>
+    );
+  }
+
+  // --- VUE 2 : FORMULAIRE D'INSCRIPTION ---
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
       <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-md">
         <div className="text-center">
-          <h2 className="text-3xl font-extrabold text-gray-900">
-            Create a new account
-          </h2>
-          <p className="mt-2 text-sm text-gray-600">
-        Or{' '}
-        <Link href="login" className="font-medium text-indigo-600 hover:text-indigo-500">
-          sign in to your existing account
-        </Link>
-      </p>
+          <h2 className="text-3xl font-extrabold text-gray-900 capitalize">Inscription {selectedRole}</h2>
+          <p className="mt-2 text-sm text-gray-600">ou{' '}<button onClick={() => setSelectedRole(null)} className="font-medium text-indigo-600 hover:text-indigo-500">choisir un autre rôle</button></p>
+        </div>
+        {error && <div className="mt-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded"><p>{error}</p></div>}
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+            <div className="grid grid-cols-2 gap-4">
+              <div><label htmlFor="first_name" className="block text-sm font-medium text-gray-700">Prénom</label><input id="first_name" name="first_name" type="text" required value={formData.first_name} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" /></div>
+              <div><label htmlFor="last_name" className="block text-sm font-medium text-gray-700">Nom</label><input id="last_name" name="last_name" type="text" required value={formData.last_name} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" /></div>
+            </div>
+            <div><label htmlFor="email" className="block text-sm font-medium text-gray-700">Adresse e-mail</label><input id="email" name="email" type="email" required value={formData.email} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" /></div>
+            <div><label htmlFor="password" className="block text-sm font-medium text-gray-700">Mot de passe</label><input id="password" name="password" type="password" required value={formData.password} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" /></div>
+            {selectedRole === 'student' && (
+              <>
+                <div><label htmlFor="level" className="block text-sm font-medium text-gray-700">Niveau Scolaire</label><select id="level" name="level" required value={formData.level} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"><option value="" disabled>Sélectionnez un niveau</option><option value="tronc commun">Tronc Commun</option><option value="premier bac">Premier Bac</option><option value="deuxieme bac">Deuxième Bac</option></select></div>
+                <div><label htmlFor="parent_email" className="block text-sm font-medium text-gray-700">E-mail du Parent (Optionnel)</label><input id="parent_email" name="parent_email" type="email" value={formData.parent_email} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" /></div>
+              </>
+            )}
+            {selectedRole === 'teacher' && (<div><label htmlFor="subject_specialization" className="block text-sm font-medium text-gray-700">Matière enseignée</label><input id="subject_specialization" name="subject_specialization" type="text" value={formData.subject_specialization} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" /></div>)}
+            <div><button type="submit" disabled={loading} className="w-full flex justify-center py-2 px-4 border rounded-md text-white bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400">{loading ? 'Création en cours...' : 'Créer le compte'}</button></div>
+        </form>
+      </div>
     </div>
-
-    {error && (
-      <div className="mt-4 bg-red-50 border-l-4 border-red-500 p-4">
-        <div className="flex items-center">
-          <div className="flex-shrink-0">
-            <svg className="h-5 w-5 text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-            </svg>
-          </div>
-          <div className="ml-3">
-            <p className="text-sm text-red-700">{error}</p>
-          </div>
-        </div>
-      </div>
-    )}
-
-    <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-      <div className="space-y-4">
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label htmlFor="first_name" className="block text-sm font-medium text-gray-700">
-              First Name
-            </label>
-            <input
-              id="first_name"
-              name="first_name"
-              type="text"
-              required
-              className="mt-1 text-gray-700 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              placeholder="First name"
-              value={formData.first_name}
-              onChange={handleChange}
-            />
-          </div>
-          <div>
-            <label htmlFor="last_name" className="block text-sm font-medium text-gray-700">
-              Last Name
-            </label>
-            <input
-              id="last_name"
-              name="last_name"
-              type="text"
-              required
-              className="mt-1 text-gray-700 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              placeholder="Last name"
-              value={formData.last_name}
-              onChange={handleChange}
-            />
-          </div>
-        </div>
-
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-            Email Address
-          </label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            autoComplete="email"
-            required
-            className="mt-1 text-gray-700 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            placeholder="Email address"
-            value={formData.email}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-            Password
-          </label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            autoComplete="new-password"
-            required
-            className="mt-1 text-gray-700 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-          />
-        </div>
-
-
-        <div>
-          <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-            Phone Number
-          </label>
-          <input
-            id="phone"
-            name="phone"
-            type="tel"
-            className="mt-1 text-gray-700 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            placeholder="Phone number (optional)"
-            value={formData.phone}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div>
-          <label htmlFor="gender" className="block text-sm font-medium text-gray-700">
-            Gender
-          </label>
-          <select
-            id="gender"
-            name="gender"
-            className="mt-1 text-gray-700 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            value={formData.gender}
-            onChange={handleChange}
-          >
-            <option value="">Select gender (optional)</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-          </select>
-        </div>
-
-        <div>
-          <label htmlFor="level" className="block text-sm font-medium text-gray-700">
-            Level
-          </label>
-          <select
-            id="level"
-            name="level"
-            className="mt-1 text-gray-700 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            value={formData.level}
-            onChange={handleChange}
-          >
-            <option value="">select level </option>
-            <option value="tronc commun">tronc commun</option>
-            <option value="premier bac">premier bac</option>
-            <option value="deuxieme bac">deuxieme bac</option>
-          </select>
-        </div>
-
-
-        <div>
-          <label htmlFor="role" className="block text-sm font-medium text-gray-700">
-            role
-          </label>
-          <select
-            id="role"
-            name="role"
-            className="mt-1 text-gray-700 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            value={formData.role}
-            onChange={handleChange}
-          >
-            <option value="">select role </option>
-            <option value="etudiant">etudiant</option>
-            <option value="Parent">Parent</option>
-            <option value="Prof">Prof</option>
-          </select>
-        </div>
-      </div>
-
-      <div>
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {loading ? 'Registering...' : 'Register'}
-        </button>
-      </div>
-    </form>
-  </div>
-  </div>
-
   );
 }
+
+const RoleCard = ({ icon, title, description, onClick }: { icon: React.ReactNode, title: string, description: string, onClick: () => void }) => (<button onClick={onClick} className="text-center w-full p-6 bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow"><div className="flex justify-center mb-4">{icon}</div><h3 className="text-xl font-bold text-gray-900">{title}</h3><p className="mt-2 text-sm text-gray-600">{description}</p></button>);

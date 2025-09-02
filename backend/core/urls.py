@@ -1,38 +1,18 @@
-"""
-URL configuration for core project.
+# # Fichier : core/urls.py (le fichier principal du projet)
 
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
 from django.urls import path, include
 
-
-
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/', include('api.urls')),
-    path('chat/', include('chat.urls')),
-    path('quiz/', include('quiz.urls')),
-    path('profiles/', include('profiles.urls')),
-    path('solve/', include("solve.urls")),
-    path('generat-cours/', include('generat_cours.urls')),
-    path('Tutoring/', include('Tutoring.urls')),
+    # Route pour l'administration Django
+    #path('admin/', admin.site.urls),
 
     
-    # URLs pour les profils
-    path('parents/', include('parents.urls')),
-    path('students/', include('students.urls')),
-    path('teachers/', include('teachers.urls')),
-    
+    # POINT D'ENTRÉE UNIQUE POUR TOUTES LES URLS DE VOTRE API
+    # Toutes les routes commenceront par /api/
+    path('api/', include('api.urls')),
+    path('api/auth/', include('userauths.urls')),
 ]
+
+# Note: Nous avons retiré TOUS les autres `include` (chat, quiz, etc.)
+# car ils seront gérés par le fichier `api.urls` pour être sous le préfixe /api/.

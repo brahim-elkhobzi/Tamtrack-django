@@ -79,7 +79,7 @@ class GroqLlamaView(APIView):
 
             chat_completion = groq_client.chat.completions.create(
                 messages=messages,
-                model="llama3-8b-8192", # Ce modèle est suffisant pour détecter le mot clé
+                model="deepseek-r1-distill-llama-70b", # Ce modèle est suffisant pour détecter le mot clé
                 # ...
             )
             llm_response = chat_completion.choices[0].message.content

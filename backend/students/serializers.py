@@ -1,17 +1,18 @@
-# students/serializers.py
+# Fichier : students/serializers.py
 
 from rest_framework import serializers
-from userauths.models import User
-from .models import Student, Parent
+from .models import Student
+from parents.models import Parent # On a besoin de chercher le parent
 
 class StudentRegistrationSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True)
-    # Pour lier un étudiant à un parent, on demande l'email du parent. C'est plus simple pour une API.
-    parent_email = serializers.EmailField(write_only=True, required=False, allow_null=True)
+    password = serializers.CharField(write_only=True, required=True)
+    # On attend l'email du parent, ce qui est plus simple à gérer pour le frontend
+    parent_email = serializers.EmailField(write_only=True, required=False, allow_blank=True)
     
     class Meta:
-        model = User
-        fields = ('email', 'password', 'first_name', 'last_name', 'phone', 'level', 'parent_email')
+        model = Student # On cible le modèle Student
+        # On inclut 'level' et 'parent_email'
+        fields = ('email', 'password', 'first_name', 'last_name', 'level', 'parent_email')
 
     def create(self, validated_data):
         parent_email = validated_data.pop('parent_email', None)
@@ -19,23 +20,18 @@ class StudentRegistrationSerializer(serializers.ModelSerializer):
 
         if parent_email:
             try:
-                # On cherche le profil du parent via son email d'utilisateur
-                parent_profile = Parent.objects.get(user__email=parent_email)
+                # On trouve le profil du parent en se basant sur son email
+                parent_profile = Parent.objects.get(email=parent_email)
             except Parent.DoesNotExist:
-                raise serializers.ValidationError("Aucun parent trouvé avec cet email.")
+                # Si le parent n'existe pas, on lève une erreur de validation claire
+                raise serializers.ValidationError({"parent_email": "Aucun parent trouvé avec cette adresse e-mail."})
         
-        validated_data['role'] = 'student'
-        user = User.objects.create_user(**validated_data)
-        # On crée l'étudiant, en le liant au profil parent si trouvé
-        Student.objects.create(user=user, parent=parent_profile)
-        return user
-
-
-class StudentDetailSerializer(serializers.ModelSerializer):
-    """Sert à afficher les détails d'un étudiant."""
-    user = serializers.StringRelatedField()
-    parent = serializers.StringRelatedField() # Affiche l'email du parent
-
-    class Meta:
-        model = Student
-        fields = ('user', 'parent', 'points')
+        # On crée l'objet Student (qui est aussi un User)
+        student = Student.objects.create_user(**validated_data)
+        
+        # Si un parent a été trouvé, on l'associe à l'étudiant
+        if parent_profile:
+            student.parent_profile = parent_profile
+            student.save()
+            
+        return student

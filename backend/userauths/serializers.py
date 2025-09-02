@@ -23,7 +23,8 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         # Le frontend pourra ensuite les décoder.
         token['first_name'] = user.first_name
         token['email'] = user.email
-        token['level'] = user.level # <-- LA LIGNE LA PLUS IMPORTANTE !
+        token['level'] = user.level
+        token['role'] = user.role  # Ajout du rôle dans le token
 
         return token
 
@@ -45,6 +46,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
             'first_name': self.user.first_name,
             'last_name': self.user.last_name,
             'level': self.user.level,
+            'role': self.user.role,  # Ajout du rôle dans la réponse
         }
         return data
 

@@ -44,7 +44,7 @@ class GenerateCourseView(APIView):
             user_prompt = f"""Génère un cours complet sur '{starting_point}' pour le niveau '{level}'. Suis strictement les directives de formatage."""
             
             completion = groq_client.chat.completions.create(
-                model="llama3-70b-8192", # Un modèle puissant pour du contenu de qualité
+                model="deepseek-r1-distill-llama-70b", # Un modèle puissant pour du contenu de qualité
                 messages=[
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": user_prompt}
