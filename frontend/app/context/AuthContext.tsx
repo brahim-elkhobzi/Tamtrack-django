@@ -77,7 +77,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     switch (role) {
       case 'student':
         alert("Connexion réussie ! Redirection vers le tableau de bord étudiant.");
-        router.push('/dashboard/student');
+        router.push('/tutoring');
         break;
       case 'teacher':
         router.push('/dashboard/teacher');

@@ -39,7 +39,7 @@ const TutorChat: FC = () => {
         setIsLoading(true);
 
         try {
-            const apiResponse = await fetch('http://127.0.0.1:8000/api/Tutoring/', { // <-- NOTE: URL pour le tuteur
+            const apiResponse = await fetch('http://127.0.0.1:8000/api/tutoring/', { // <-- NOTE: URL pour le tuteur
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ prompt: input, history: messages }), // On envoie l'ancien historique

@@ -40,7 +40,7 @@ class TutorChatView(APIView):
         try:
             chat_completion = groq_client.chat.completions.create(
                 messages=messages,
-                model="llama3-8b-8192", 
+                model="gemma2-9b-it", 
             )
             response = chat_completion.choices[0].message.content
             return Response({'response': response}, status=200)
