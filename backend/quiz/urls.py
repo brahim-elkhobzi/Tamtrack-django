@@ -31,6 +31,7 @@ from .views import TopicListView, QuizQuestionsView, SubmitAnswerView
 
 from .views import FullQuizView
 from .views import SubmitAnswerView ,save_profile 
+from .views import get_recommendation_and_exercises
 
 urlpatterns = [
     
@@ -49,6 +50,9 @@ urlpatterns = [
     path('submit-answer/<str:topic_name>/<path:question_text>/', SubmitAnswerView.as_view(), name='submit-answer'),
 
     path('save_profile/', save_profile, name='save-profile'),
+
+    # quiz/urls.py
+    path('recommendation-exercises/', get_recommendation_and_exercises, name='get-recommendation-and-exercises'),
 
     
 ]

@@ -8,6 +8,8 @@ import Sidebar from './components/Sidebar'; // En supposant que Sidebar est mis 
 import DashboardHeader from './components/DashboardHeader'; // Et que le Header est correct
 import Link from 'next/link';
 
+import WelcomeBanner from './components/WelcomeBanner';
+
 // --- Interfaces pour les données (bonne pratique avec TypeScript) ---
 interface Exercise {
     subject: string;
@@ -28,29 +30,6 @@ interface Achievement {
     description: string;
 }
 
-// --- SOUS-COMPOSANTS POUR CHAQUE CARTE SPÉCIFIQUE ---
-
-// Le "header" orange de bienvenue
-const WelcomeBanner: FC = () => (
-    <div className="bg-orange-500/90 dark:bg-orange-600/90 text-white rounded-2xl p-8 grid grid-cols-1 md:grid-cols-3 items-center gap-6 shadow-lg">
-        <div className="md:col-span-2">
-            <h1 className="text-3xl md:text-4xl font-bold mb-2">Bonjour Salma !</h1>
-            <p className="text-orange-100">Prêt pour une nouvelle journée d'apprentissage ?</p>
-        </div>
-        <div className="flex justify-between md:justify-around text-lg">
-            <div className="flex items-center gap-2">
-                <FiZap className="opacity-80"/>
-                <span>7 jours consécutifs</span>
-            </div>
-            <div className="flex items-center gap-2">
-                <FiAward className="opacity-80"/>
-                <span>2450 points</span>
-            </div>
-        </div>
-    </div>
-);
-
-// Carte de Progression Globale (à droite)
 const GlobalProgressCard: FC = () => (
     <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-md h-full">
         <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-4">Progression Globale</h2>

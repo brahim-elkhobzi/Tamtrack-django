@@ -1,9 +1,15 @@
 # votre_app_api/views.py
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework import status
 
 from django.conf import settings
 from groq import Groq
+
+
+
+
+
 
 groq_client = None
 if settings.GROQ_API_KEY:
@@ -53,4 +59,6 @@ class TutorChatView(APIView):
             print(f"Message d'erreur: {e}")
             print(f"--- FIN DE L'ERREUR ---")
             
-            return Response({"error": "Erreur interne de l'API IA", "details": str(e)}, status=500)
+            return Response({"error": "Erreur interne de l'API IA", "details": str(e)}, status=500) 
+        
+

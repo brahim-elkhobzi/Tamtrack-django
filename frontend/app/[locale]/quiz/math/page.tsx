@@ -166,7 +166,7 @@ const MathGuidedQuizPage: React.FC = () => {
         return {
           topic,
           score: percentage,
-          recommendation: `Recommendation based on a score of ${percentage} for ${topic}.`,
+          recommendation: `${topic}`,
         };
       });
 
@@ -269,10 +269,10 @@ const MathGuidedQuizPage: React.FC = () => {
             })}
           </div>
           <button
-            onClick={() => router.push('/profile')}
+            onClick={() => router.push('/tutoring')}
             className="w-full mt-8 text-white font-semibold py-3 px-6 rounded-xl text-lg bg-gradient-to-r from-indigo-500 to-purple-600 hover:opacity-90 transition-transform duration-200 hover:scale-105"
           >
-            Voir mon Profil et mes Recommandations
+            Voir mes Recommandations de Tutorat
           </button>
         </div>
       </div>

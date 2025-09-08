@@ -23,21 +23,17 @@ const TutoringPage: FC = () => {
     
     return (
         <MathJaxContext config={mathjaxConfig}>
-            <div className="flex bg-gray-100 dark:bg-gray-900 min-h-screen">
+            <div className="flex  min-h-screen">
                 <Sidebar />
                 <main className="flex-1 p-6 md:p-8 overflow-y-auto">
                     <DashboardHeader />
-                    <div className="space-y-4 mt-8">
+                    <div className="space-y-1 mt-8">
                         <h1 className="text-3xl md:text-4xl font-bold text-orange-500">TUTORING+</h1>
                         <p className="text-gray-500 dark:text-gray-400">Tuteur IA</p>
                     </div>
 
                     {/*
-                    ========================================================================
-                    LA CORRECTION PRINCIPALE EST ICI : 
-                    On utilise un conteneur simple `space-y-8` pour empiler 
-                    les composants verticalement, au lieu d'une grille complexe.
-                    ========================================================================
+                   
                     */}
                     <div className="mt-8 space-y-8 max-w-5xl mx-auto">
                        <QuizSelection />

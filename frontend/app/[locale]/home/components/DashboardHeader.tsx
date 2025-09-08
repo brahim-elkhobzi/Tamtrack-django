@@ -1,12 +1,28 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FiSearch, FiBell } from 'react-icons/fi';
 import LanguageSwitcher from '@/app/components/LanguageSwitcher';
 // 1. IMPORTER LE NOUVEAU COMPOSANT
 import DarkModeToggle from '@/app/components/DarkModeToggle';
+import api from '@/utils/axios';
 
 const DashboardHeader = () => {
+  const [fullName, setFullName] = useState('Utilisateur');
+
+  useEffect(() => {
+    const fetchFullName = async () => {
+      try {
+        const response = await api.get('/api/user/profile/'); // Replace with the actual endpoint
+        setFullName(response.data.first_name + ' ' + response.data.last_name || 'Utilisateur');
+      } catch (error) {
+        console.error('Failed to fetch user full name:', error);
+      }
+    };
+
+    fetchFullName();
+  }, []);
+
   return (
     <header className="flex justify-between items-center mb-10">
       <div className="relative w-2/5">
@@ -27,8 +43,8 @@ const DashboardHeader = () => {
         
         {/* 2. UTILISER LE COMPOSANT ICI */}
         <DarkModeToggle />
-        
-        <button>Salma ⌄</button>
+
+        <button>{fullName} </button>
       </div>
     </header>
   );

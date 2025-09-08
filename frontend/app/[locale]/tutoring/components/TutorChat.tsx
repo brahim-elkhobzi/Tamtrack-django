@@ -13,10 +13,8 @@ type Message = {
 
 // Conversation initiale de la maquette
 const initialMessages: Message[] = [
-    { role: 'assistant', content: "Salam Salma! Je suis Ahmed, ton tuteur IA. Comment puis-je t'aider aujourd'hui ?" },
-    { role: 'user', content: "Oui, ce serait génial ! J'ai du mal avec le subjonctif." },
-    { role: 'assistant', content: "Parfait ! Commençons par un exemple simple. Une équation du 2ème degré a la forme `$ax^2 + bx + c = 0$`. Prenons `$x^2 - 5x + 6 = 0$`. Veux-tu que je t'explique comment la résoudre ?" },
-];
+    { role: 'assistant', content: "Salam ! Je suis Ahmed, ton tuteur IA. Comment puis-je t'aider aujourd'hui ?" },
+    ];
 
 const TutorChat: FC = () => {
     const [messages, setMessages] = useState<Message[]>(initialMessages);
