@@ -10,7 +10,7 @@ class UserScore(models.Model):
     recommendation = models.TextField(blank=True, null=True)
 
     class Meta:
-        unique_together = ('user',)
+        unique_together = ('user', 'topic')
     def __str__(self):
         return f"Score de {self.user.email}"
 

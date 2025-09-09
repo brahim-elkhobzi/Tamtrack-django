@@ -1,4 +1,4 @@
-# votre_app_api/views.py
+#GenerateCourse/views.py
 
 from django.conf import settings
 from groq import Groq
@@ -6,7 +6,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 import logging
-
+from rest_framework.permissions import IsAuthenticated
+from quiz.models import Recommendation
+from students.models import Student
 logger = logging.getLogger(__name__)
 
 # Le client partagé (ne change pas)

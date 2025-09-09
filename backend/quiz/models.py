@@ -1,3 +1,4 @@
+# backend/quiz/models.py
 from django.db import models
 from userauths.models import User
 
@@ -22,12 +23,15 @@ class Question(models.Model):
 ####     quiz      scores   ####
 class Score(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="scores")
-    topic = models.CharField(max_length=255) # Utilise un CharField
+    topic = models.CharField(max_length=255)
     score = models.PositiveIntegerField(default=0)
     recommendation = models.TextField(blank=True, null=True)
-    timestamp = models.DateTimeField(auto_now_add=True)
+    # Utilisez auto_now=True si vous voulez que la date soit mise à jour à chaque modification,
+    # ou auto_now_add=True pour n'avoir que la date de création.
+    timestamp = models.DateTimeField(auto_now=True) 
 
     class Meta:
+        # La contrainte d'unicité qui autorise un score par thème pour chaque utilisateur
         unique_together = ('user', 'topic')
 
     def __str__(self):

@@ -188,9 +188,9 @@ const MathGuidedQuizPage: React.FC = () => {
 
     try {
       const response = await api.post(
-        `/api/profiles/submit-answer/${encodeURIComponent(currentTopic)}/${encodeURIComponent(currentQuestion.question)}/`,
+        `/api/quiz/submit-answer/${encodeURIComponent(currentTopic)}/${encodeURIComponent(currentQuestion.question)}/`,
         { answer: selectedOption },
-        { timeout: 5000 }
+        { timeout: 1000 }
       );
 
       setFeedback(response.data);

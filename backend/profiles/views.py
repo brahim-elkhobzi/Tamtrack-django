@@ -1,12 +1,14 @@
-
+# backend/profiles/views.py
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 
+
+
 # Il est mieux de n'importer que les fonctions nécessaires
 from quiz.services import check_answer 
-from quiz.models import Topic # Assurez-vous d'importer Topic depuis l'app quiz
+from quiz.models import Topic , Score # Assurez-vous d'importer Topic depuis l'app quiz
 from .models import UserScore
 
 class SubmitAnswerView(APIView):
@@ -52,8 +54,8 @@ class SubmitAnswerView(APIView):
                 topic_obj = Topic.objects.get(name__iexact=topic_name, level=user_level)
                 
                 # Le reste de votre logique de sauvegarde est bon
-                score_obj, created = UserScore.objects.get_or_create(user=user, topic=topic_obj)
-                
+                score_obj, created = Score.objects.get_or_create(user=user, topic=topic_obj)
+
                 score_obj.total_answered += 1
                 if result['is_correct']:
                     score_obj.correct_answers += 1

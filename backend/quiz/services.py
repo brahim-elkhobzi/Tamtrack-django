@@ -1,13 +1,15 @@
 # quiz/services.py
 
-from .quiz_data import tronc_commun, premier_bac, deuxieme_bac
+from .quiz_data import deuxieme_bac
+from .quiz_data import premier_bac
+from .quiz_data import tronc_commun
 import random
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from . import services
-from .quiz_data import tronc_commun, premier_bac, deuxieme_bac
+from .quiz_data import tronc_commun
 
 LEVEL_DATA_MAP = {
     "tronc commun": tronc_commun.questions_by_topic,

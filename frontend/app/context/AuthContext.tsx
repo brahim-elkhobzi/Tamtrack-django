@@ -167,7 +167,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     Cookies.remove("access_token");
     Cookies.remove("refresh_token");
     setUser(null);
-    router.push("/login"); // Redirige l'utilisateur vers la page de connexion
+    router.push("/"); // Redirige l'utilisateur vers la page de connexion
   };
 
   return (

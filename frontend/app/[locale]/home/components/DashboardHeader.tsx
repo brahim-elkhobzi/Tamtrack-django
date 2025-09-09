@@ -6,9 +6,11 @@ import LanguageSwitcher from '@/app/components/LanguageSwitcher';
 // 1. IMPORTER LE NOUVEAU COMPOSANT
 import DarkModeToggle from '@/app/components/DarkModeToggle';
 import api from '@/utils/axios';
+import { useAuth } from '@/app/context/AuthContext';
 
 const DashboardHeader = () => {
   const [fullName, setFullName] = useState('Utilisateur');
+  const { logout } = useAuth();
 
   useEffect(() => {
     const fetchFullName = async () => {
@@ -45,6 +47,9 @@ const DashboardHeader = () => {
         <DarkModeToggle />
 
         <button>{fullName} </button>
+        <button onClick={logout} className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">
+          Déconnexion
+        </button>
       </div>
     </header>
   );

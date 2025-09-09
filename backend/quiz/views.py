@@ -152,18 +152,24 @@ def save_profile(request):
              return Response({"error": "Les données envoyées doivent être une liste d'objets."}, status=status.HTTP_400_BAD_REQUEST)
 
         recommendation_text_to_save = ""
+        min_score = 100
         for item in data:
             topic = item.get('topic')
             score_value = item.get('score')
-            recommendation_text = item.get('recommendation')
+            if score_value < min_score:
+                recommendation_text = item.get('recommendation')
+                min_score = score_value
 
-            if topic is not None and score_value is not None:
-                Score.objects.update_or_create(
-                    user=user,
-                    topic=topic,
-                    defaults={'score': score_value}
-                )
-            
+            try :
+                if topic is not None and score_value is not None:
+                    Score.objects.update_or_create(
+                        user=user,
+                        topic=topic,
+                        defaults={'score': score_value}
+                    )
+            except Exception as e:
+                print(f"Erreur lors de la mise à jour/création du score pour le topic '{topic}': {e}")
+                continue
             # On garde en mémoire la dernière recommandation pour la sauvegarder à la fin
             if recommendation_text:
                 recommendation_text_to_save = recommendation_text
@@ -231,7 +237,7 @@ def get_recommendation_and_exercises(request):
         
         chat_completion = groq_client.chat.completions.create(
             messages=messages,
-            model="llama-3.3-70b-versatile",  
+            model="deepseek-r1-distill-llama-70b",
             temperature=0.8,
             response_format={"type": "json_object"},
         )

@@ -1,27 +1,3 @@
-# from django.urls import path, include
-# from django.urls import path
-# #fro .views import GroqLlamaView
-
-# from parents.views import ParentRegistrationView
-# from students.views import StudentRegistrationView
-# from teachers.views import TeacherRegistrationView
-
-
-# urlpatterns = [
-#     path('user/', include('userauths.urls')),
-#     path('chat/', include('chat.urls')),
-#     path('quiz/', include('quiz.urls')),
-#     path('profiles/', include('profiles.urls')),
-#     path('solve/', include("solve.urls")),
-#     path('generate-course/', include('generat_cours.urls')),
-#     path('Tutoring/', include('Tutoring.urls')),
-
-    
-#    path('api/register/student/', StudentRegistrationView.as_view(), name='register-student'),
-#     path('api/register/parent/', ParentRegistrationView.as_view(), name='register-parent'),
-#     path('api/register/teacher/', TeacherRegistrationView.as_view(), name='register-teacher'),
-# ]
-# Fichier : api/urls.py
 
 from django.urls import path, include
 from parents.views import ParentRegistrationView
@@ -52,4 +28,5 @@ urlpatterns = [
     path('generate-course/', include('generat_cours.urls')), # Attention à la coquille ici
     # Route: /api/tutoring/...
     path('tutoring/', include('Tutoring.urls')), # Recommandé de mettre en minuscule
+    
 ]
