@@ -1,5 +1,6 @@
 # Fichier : quiz/views.py
 
+from anyio import sleep
 from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
@@ -213,7 +214,7 @@ def get_recommendation_and_exercises(request):
     # Étape 2 : Vérifier que le service IA est disponible
     if not groq_client:
         return Response({"error": "Service IA indisponible."}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
-
+    sleep(3) 
     try:
         # Étape 3 : Récupérer la dernière recommandation pour l'utilisateur
         recommendation = Recommendation.objects.filter(user=user).order_by('-timestamp').first()
@@ -240,7 +241,7 @@ def get_recommendation_and_exercises(request):
         
         chat_completion = groq_client.chat.completions.create(
             messages=messages,
-            model="deepseek-r1-distill-llama-70b",
+            model="groq/compound",
             temperature=0.8,
             response_format={"type": "json_object"},
         )

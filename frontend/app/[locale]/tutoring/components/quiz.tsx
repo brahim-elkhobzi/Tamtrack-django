@@ -19,28 +19,28 @@ const modulesData: Module[] = [
     name: 'Mathématiques',
     description: 'Explorez la logique, l\'algèbre et l\'analyse pour aiguiser votre esprit critique.',
     href: '/fr/quiz/math',
-    icon: '/icons/math-icon.svg',
+    icon: '/tutoring/math.png', 
     color: 'blue',
   },
   {
     name: 'Physique-Chimie',
     description: 'Découvrez les lois de l\'univers, de l\'atome aux galaxies.',
     href: '/fr/quiz/physique',
-    icon: '/icons/physics-icon.svg',
+    icon: '/tutoring/pc.png',
     color: 'purple',
   },
   {
     name: 'SVT',
     description: 'Plongez dans les sciences de la vie et de la Terre.',
     href: '/fr/quiz/svt',
-    icon: '/icons/svt-icon.svg',
+    icon: '/tutoring/svt.png',
     color: 'green',
   },
     {
     name: 'Cours Personnalisé',
     description: 'Générez un cours sur mesure avec notre intelligence artificielle.',
     href: '/fr/generate-course',
-    icon: '/icons/course-icon.svg', // Assurez-vous d'avoir cette icône
+    icon: '/tutoring/logoo.png',
     color: 'orange',
   },
 ];
