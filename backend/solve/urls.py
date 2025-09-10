@@ -1,7 +1,7 @@
+# solve/urls.py
 from django.urls import path
-from .views import SolveProblemView , SimilarProblemsView
+from .views import SolveProblemView
 
 urlpatterns = [
-    path('', SolveProblemView.as_view(), name='solve_problem'),
-    path('similar/', SimilarProblemsView.as_view(), name='similar_problems'),
+    path('solve/', SolveProblemView.as_view(), name='solve-problem'),
 ]
