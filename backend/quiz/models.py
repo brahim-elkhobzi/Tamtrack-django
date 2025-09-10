@@ -40,7 +40,10 @@ class Score(models.Model):
 class Recommendation(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     text = models.TextField()
+    matiere = models.CharField(max_length=100, blank=True, null=True) 
     timestamp = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
         return f"Recommandation pour {self.user.get_full_name()}"
+    
+

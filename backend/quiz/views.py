@@ -146,8 +146,10 @@ def save_profile(request):
     """
     try:
         data = request.data
-        user = request.user 
-
+        user = request.user
+        if data and 'matiere' in data[0]:
+            matiere = data[0]['matiere']
+            
         if not isinstance(data, list):
              return Response({"error": "Les données envoyées doivent être une liste d'objets."}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -177,6 +179,7 @@ def save_profile(request):
         if recommendation_text_to_save:
             Recommendation.objects.update_or_create(
                 user=user,
+                matiere=matiere,
                 defaults={'text': recommendation_text_to_save}
             )
 
