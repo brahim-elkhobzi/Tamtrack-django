@@ -167,6 +167,7 @@ const MathGuidedQuizPage: React.FC = () => {
           topic,
           score: percentage,
           recommendation: `${topic}`,
+          matiere: 'Mathématiques',
         };
       });
 
