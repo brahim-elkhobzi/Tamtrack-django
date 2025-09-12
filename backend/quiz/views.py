@@ -306,7 +306,7 @@ def get_recommendation_and_exercises(request):
         
         chat_completion = groq_client.chat.completions.create(
             messages=messages,
-            model="openai/gpt-oss-120b",
+            model="meta-llama/llama-4-scout-17b-16e-instruct",
             temperature=0.8,
             response_format={"type": "json_object"},
         )
