@@ -27,41 +27,69 @@ User = get_user_model()
 # VUES SPÉCIFIQUES AUX ÉTUDIANTS (AVEC VÉRIFICATION DE RÔLE)
 # ==========================================================
 
+# class FullQuizView(APIView):
+#     """
+#     Récupère l'intégralité du quiz guidé pour l'étudiant connecté.
+#     Applique une logique de niveau par défaut.
+#     """
+#     permission_classes = [IsAuthenticated]
+
+#     def get(self, request):
+#         user = request.user
+
+#         # Étape 1 : S'assurer que l'utilisateur est un étudiant
+#         if not hasattr(user, 'student'):
+#             return Response(
+#                 {"detail": "Cette fonctionnalité est uniquement accessible aux étudiants."},
+#                 status=status.HTTP_403_FORBIDDEN
+#             )
+            
+#         # Étape 2 : Accéder au niveau via la relation enfant 'student'
+#         user_level = user.student.level
+
+#         # Étape 3 : Appliquer une valeur par défaut si le niveau n'est pas défini
+#         if not user_level:
+#             user_level = "tronc commun"
+        
+#         # Étape 4 : Appeler le service pour récupérer les données du quiz
+#         full_quiz_data = services.get_full_quiz_by_level(user_level)
+
+#         if not full_quiz_data:
+#              return Response(
+#                 {"detail": f"Aucun quiz trouvé pour le niveau : {user_level}."},
+#                 status=status.HTTP_404_NOT_FOUND
+#             )
+
+#         return Response(full_quiz_data, status=status.HTTP_200_OK)
+# quiz/views.py
+
 class FullQuizView(APIView):
     """
-    Récupère l'intégralité du quiz guidé pour l'étudiant connecté.
-    Applique une logique de niveau par défaut.
+    Récupère l'intégralité du quiz guidé pour une MATIÈRE donnée,
+    en se basant sur le niveau de l'étudiant connecté.
     """
     permission_classes = [IsAuthenticated]
 
-    def get(self, request):
+    # CORRECTION : La méthode `get` accepte maintenant `matiere` comme paramètre
+    def get(self, request, matiere):
         user = request.user
-
-        # Étape 1 : S'assurer que l'utilisateur est un étudiant
-        if not hasattr(user, 'student'):
-            return Response(
-                {"detail": "Cette fonctionnalité est uniquement accessible aux étudiants."},
-                status=status.HTTP_403_FORBIDDEN
-            )
-            
-        # Étape 2 : Accéder au niveau via la relation enfant 'student'
-        user_level = user.student.level
-
-        # Étape 3 : Appliquer une valeur par défaut si le niveau n'est pas défini
-        if not user_level:
-            user_level = "tronc commun"
         
-        # Étape 4 : Appeler le service pour récupérer les données du quiz
-        full_quiz_data = services.get_full_quiz_by_level(user_level)
-
+        try:
+            student = Student.objects.get(pk=user.pk)
+            user_level = student.level or "tronc commun"
+        except Student.DoesNotExist:
+            return Response({"detail": "Profil étudiant non trouvé."}, status=status.HTTP_404_NOT_FOUND)
+        
+        # CORRECTION : On appelle la nouvelle fonction de service avec les deux arguments
+        full_quiz_data = services.get_full_quiz_by_level_and_matiere(user_level, matiere)
+        
         if not full_quiz_data:
              return Response(
-                {"detail": f"Aucun quiz trouvé pour le niveau : {user_level}."},
+                {"detail": f"Aucun quiz trouvé pour la matière '{matiere}' à votre niveau ('{user_level}')."},
                 status=status.HTTP_404_NOT_FOUND
             )
 
         return Response(full_quiz_data, status=status.HTTP_200_OK)
-
 
 class TopicListView(APIView):
     """
@@ -107,33 +135,70 @@ class QuizQuestionsView(APIView):
         return Response(questions)
 
 
+# class SubmitAnswerView(APIView):
+#     """
+#     Permet à un étudiant de soumettre une réponse et de recevoir un feedback.
+#     """
+#     permission_classes = [IsAuthenticated]
+
+#     def post(self, request, topic_name, question_text):
+#         user = request.user
+        
+#         if not hasattr(user, 'student'):
+#             return Response({"detail": "Cette fonctionnalité est réservée aux étudiants."}, status=status.HTTP_403_FORBIDDEN)
+
+#         user_level = user.student.level
+#         if not user_level:
+#             user_level = "tronc commun"
+
+#         user_answer = request.data.get('answer')
+#         if not user_answer:
+#             return Response({'error': 'La réponse ("answer") est requise.'}, status=status.HTTP_400_BAD_REQUEST)
+            
+#         result = services.check_answer(user_level, topic_name, question_text, user_answer)
+#         if result is None:
+#             return Response({'error': 'Question non trouvée.'}, status=status.HTTP_404_NOT_FOUND)
+        
+#         return Response(result, status=status.HTTP_200_OK)
+
+# quiz/views.py
+
 class SubmitAnswerView(APIView):
     """
-    Permet à un étudiant de soumettre une réponse et de recevoir un feedback.
+    Permet à un étudiant de soumettre une réponse pour un quiz spécifique
+    et de recevoir un feedback.
     """
     permission_classes = [IsAuthenticated]
 
-    def post(self, request, topic_name, question_text):
+    # ==========================================================
+    # CORRECTION : On ajoute `matiere` aux paramètres de la méthode
+    # ==========================================================
+    def post(self, request, matiere, topic_name, question_text):
         user = request.user
-        
-        if not hasattr(user, 'student'):
-            return Response({"detail": "Cette fonctionnalité est réservée aux étudiants."}, status=status.HTTP_403_FORBIDDEN)
-
-        user_level = user.student.level
-        if not user_level:
-            user_level = "tronc commun"
+        # Le reste de votre logique pour vérifier le profil et le niveau est bon.
+        try:
+            student = Student.objects.get(pk=user.pk)
+            user_level = student.level or "tronc commun"
+        except Student.DoesNotExist:
+            return Response({"detail": "Profil étudiant non trouvé."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         user_answer = request.data.get('answer')
         if not user_answer:
             return Response({'error': 'La réponse ("answer") est requise.'}, status=status.HTTP_400_BAD_REQUEST)
             
-        result = services.check_answer(user_level, topic_name, question_text, user_answer)
-        if result is None:
-            return Response({'error': 'Question non trouvée.'}, status=status.HTTP_404_NOT_FOUND)
+        # ==========================================================
+        # On passe maintenant `matiere` à votre service.
+        # Vous devrez adapter votre service pour qu'il utilise cette information.
+        # ==========================================================
+        result = services.check_answer(user_level, matiere, topic_name, question_text, user_answer)
         
+        if result is None:
+            return Response({'error': 'Question ou thème non trouvé.'}, status=status.HTTP_404_NOT_FOUND)
+        
+        # Vous ajouterez ici la logique de sauvegarde dans la table de progression temporaire (QuizAttempt)
+        # en utilisant `matiere` pour trouver le bon `Topic`
+
         return Response(result, status=status.HTTP_200_OK)
-
-
 # ==========================================================
 # VUE UNIVERSELLE (POUR TOUS LES UTILISATEURS CONNECTÉS)
 # ==========================================================

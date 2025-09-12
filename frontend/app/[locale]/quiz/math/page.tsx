@@ -133,10 +133,10 @@ const MathGuidedQuizPage: React.FC = () => {
   useEffect(() => {
     if (!authLoading && user) fetchFullQuiz();
   }, [authLoading, user]);
-
+  const matiere = 'math';
   const fetchFullQuiz = async () => {
     try {
-      const { data } = await api.get('/api/quiz/get-full-quiz/', {
+      const { data } = await api.get(`/api/quiz/get-full-quiz/${matiere}/`, {
         headers: { 'Accept-Language': 'fr' },
       });
       if (data && typeof data === 'object' && Object.keys(data).length > 0) {
@@ -189,7 +189,7 @@ const MathGuidedQuizPage: React.FC = () => {
 
     try {
       const response = await api.post(
-        `/api/quiz/submit-answer/${encodeURIComponent(currentTopic)}/${encodeURIComponent(currentQuestion.question)}/`,
+        `/api/quiz/${matiere}/submit-answer/${encodeURIComponent(currentTopic)}/${encodeURIComponent(currentQuestion.question)}/`,
         { answer: selectedOption },
         { timeout: 1000 }
       );

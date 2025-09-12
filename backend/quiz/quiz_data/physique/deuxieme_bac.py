@@ -1,332 +1,509 @@
-
-# Math Quiz Questions for terminale Level
 questions_by_topic = {
-    "Limites et continuité": [
+    "Ondes mécaniques progressives": [
         {
-            "question": "Quelle est la limite de f(x) = (x² - 4)/(x - 2) quand x tend vers 2 ?",
-            "options": ["4", "2", "0", "Indéfini"],
-            "correct": "4",
-            "explanation": "Simplifier : (x² - 4)/(x - 2) = x + 2 pour x ≠ 2, donc lim = 4.",
+            "question": "Qu'est-ce qu'une onde mécanique progressive ?",
+            "options": [
+                "Une perturbation qui se propage sans transport de matière",
+                "Un déplacement de matière avec transport d'énergie",
+                "Une oscillation locale sans propagation",
+                "Un phénomène uniquement électromagnétique"
+            ],
+            "correct": "Une perturbation qui se propage sans transport de matière",
+            "explanation": "Une onde mécanique progressive est une perturbation qui se propage dans un milieu matériel avec transport d'énergie mais sans transport de matière.",
             "level": "Terminale",
-            "topic": "Limites et continuité"
+            "topic": "Ondes mécaniques progressives"
         },
         {
-            "question": "La fonction f(x) = 1/x est-elle continue en x = 0 ?",
-            "options": ["Non", "Oui", "À droite", "À gauche"],
-            "correct": "Non",
-            "explanation": "f(x) n’est pas définie en x = 0, donc pas continue.",
+            "question": "Quelle est la célérité v d'une onde dépendante ?",
+            "options": [
+                "Uniquement de la fréquence",
+                "Uniquement des propriétés du milieu",
+                "Uniquement de l'amplitude",
+                "De la longueur d'onde uniquement"
+            ],
+            "correct": "Uniquement des propriétés du milieu",
+            "explanation": "La célérité d'une onde mécanique est déterminée par les caractéristiques du milieu de propagation (masse volumique, élasticité...).",
             "level": "Terminale",
-            "topic": "Limites et continuité"
-        },
-        {
-            "question": "Quelle est la limite de sin(2x)/x quand x tend vers 0 ?",
-            "options": ["2", "1", "0", "Indéfini"],
-            "correct": "2",
-            "explanation": "sin(2x)/x = 2(sin(2x)/(2x)), lim sin(2x)/(2x) = 1, donc lim = 2.",
-            "level": "Terminale",
-            "topic": "Limites et continuité"
-        },
-       
+            "topic": "Ondes mécaniques progressives"
+        }
     ],
-    "Dérivation et étude des fonctions": [
+    
+    "Ondes mécaniques progressives périodiques": [
         {
-            "question": "Quelle est la dérivée de f(x) = x⁴ + 3x² ?",
-            "options": ["4x³ + 6x", "4x³ + 3x", "x³ + 6x", "4x + 6"],
-            "correct": "4x³ + 6x",
-            "explanation": "f'(x) = 4x³ + 6x par les règles de dérivation.",
+            "question": "Qu'est-ce que la période temporelle T d'une onde ?",
+            "options": [
+                "La distance entre deux crêtes successives",
+                "Le temps entre deux passages consécutifs d'un même état vibratoire",
+                "La vitesse de propagation de l'onde",
+                "L'inverse de l'amplitude"
+            ],
+            "correct": "Le temps entre deux passages consécutifs d'un même état vibratoire",
+            "explanation": "La période T est la durée séparant deux répétitions identiques de l'onde en un point donné.",
             "level": "Terminale",
-            "topic": "Dérivation et étude des fonctions"
-        },
-        {
-            "question": "Quel est le point critique de f(x) = x³ - 6x² + 9x ?",
-            "options": ["x = 1, 3", "x = 0", "x = 2", "Aucun"],
-            "correct": "x = 1, 3",
-            "explanation": "f'(x) = 3x² - 12x + 9 = 3(x-1)(x-3), donc x = 1, 3.",
-            "level": "Terminale",
-            "topic": "Dérivation et étude des fonctions"
-        },
-        {
-            "question": "La fonction f(x) = e^(-x²) a-t-elle un maximum ?",
-            "options": ["Oui", "Non", "À l’infini", "Indéfini"],
-            "correct": "Oui",
-            "explanation": "f'(x) = -2xe^(-x²), f'(0) = 0, f''(0) < 0, donc maximum en x = 0.",
-            "level": "Terminale",
-            "topic": "Dérivation et étude des fonctions"
-        },
-        
+            "topic": "Ondes mécaniques progressives périodiques"
+        }
     ],
-    "Suites numériques": [
+    
+    "Propagation des ondes lumineuses": [
         {
-            "question": "Si u_n = 2/(n + 1), quelle est la limite quand n tend vers l’infini ?",
-            "options": ["0", "1", "2", "Indéfini"],
-            "correct": "0",
-            "explanation": "2/(n + 1) tend vers 0 quand n → ∞.",
+            "question": "Dans quel milieu la lumière se propage-t-elle le plus rapidement ?",
+            "options": [
+                "Dans l'eau",
+                "Dans le verre",
+                "Dans le vide",
+                "Dans l'air"
+            ],
+            "correct": "Dans le vide",
+            "explanation": "La lumière se propage à sa vitesse maximale dans le vide (c = 3 × 10^8 m/s).",
             "level": "Terminale",
-            "topic": "Suites numériques"
-        },
-        {
-            "question": "La suite u_n = (-1)^n/n converge-t-elle ?",
-            "options": ["Oui", "Non", "Vers 1", "Vers -1"],
-            "correct": "Oui",
-            "explanation": "lim (-1)^n/n = 0, donc converge vers 0.",
-            "level": "Terminale",
-            "topic": "Suites numériques"
-        },
-        {
-            "question": "Si u_1 = 3 et u_{n+1} = u_n + 2, quelle est l’expression de u_n ?",
-            "options": ["3 + 2n", "3 + 2(n-1)", "2n", "3n"],
-            "correct": "3 + 2(n-1)",
-            "explanation": "Suite arithmétique : u_n = u_1 + (n-1)d = 3 + 2(n-1).",
-            "level": "Terminale",
-            "topic": "Suites numériques"
-        },
-       
-     ],
-    "Fonctions primitives": [
-        {
-            "question": "Quelle est une primitive de f(x) = 3x² ?",
-            "options": ["x³ + C", "3x³ + C", "x² + C", "3x + C"],
-            "correct": "x³ + C",
-            "explanation": "∫3x² dx = x³ + C.",
-            "level": "Terminale",
-            "topic": "Fonctions primitives"
-        },
-        {
-            "question": "Quelle est une primitive de f(x) = sin(2x) ?",
-            "options": ["-(1/2)cos(2x) + C", "cos(2x) + C", "-(1/2)sin(2x) + C", "sin(2x) + C"],
-            "correct": "-(1/2)cos(2x) + C",
-            "explanation": "∫sin(2x) dx = -(1/2)cos(2x) + C par substitution.",
-            "level": "Terminale",
-            "topic": "Fonctions primitives"
-        },
-        {
-            "question": "Quelle est une primitive de f(x) = e^(3x) ?",
-            "options": ["(1/3)e^(3x) + C", "e^(3x) + C", "3e^(3x) + C", "e^x + C"],
-            "correct": "(1/3)e^(3x) + C",
-            "explanation": "∫e^(3x) dx = (1/3)e^(3x) + C par substitution.",
-            "level": "Terminale",
-            "topic": "Fonctions primitives"
-        },
-       
+            "topic": "Propagation des ondes lumineuses"
+        }
     ],
-    "Fonctions logarithmiques": [
+    
+    "Décroissance radioactive": [
         {
-            "question": "Quel est le domaine de f(x) = ln(2x - 1) ?",
-            "options": ["]1/2,∞[", "[1/2,∞[", "]0,∞[", "ℝ"],
-            "correct": "]1/2,∞[",
-            "explanation": "ln(2x - 1) défini pour 2x - 1 > 0, soit x > 1/2.",
+            "question": "Qu'est-ce que la demi-vie radioactive ?",
+            "options": [
+                "Le temps nécessaire pour que la moitié des noyaux se désintègrent",
+                "Le temps total de disparition de la substance",
+                "La moitié de la période de l'onde associée",
+                "Le temps de doublement de l'activité"
+            ],
+            "correct": "Le temps nécessaire pour que la moitié des noyaux se désintègrent",
+            "explanation": "La demi-vie est le temps au bout duquel la moitié des noyaux radioactifs initialement présents se sont désintégrés.",
             "level": "Terminale",
-            "topic": "Fonctions logarithmiques"
-        },
-        {
-            "question": "Quelle est la dérivée de f(x) = ln(x + 3) ?",
-            "options": ["1/(x + 3)", "1/x", "x/(x + 3)", "1/(x + 3)²"],
-            "correct": "1/(x + 3)",
-            "explanation": "f'(x) = 1/(x + 3) par dérivation de ln(u).",
-            "level": "Terminale",
-            "topic": "Fonctions logarithmiques"
-        },
-        {
-            "question": "Quelle est la limite de ln(x)/x quand x tend vers ∞ ?",
-            "options": ["0", "1", "∞", "-∞"],
-            "correct": "0",
-            "explanation": "ln(x) croît plus lentement que x, donc lim = 0.",
-            "level": "Terminale",
-            "topic": "Fonctions logarithmiques"
-        },
-     
+            "topic": "Décroissance radioactive"
+        }
     ],
-    "Nombres complexes (Partie 1)": [
+    
+    "Noyaux, masse et énergie": [
         {
-            "question": "Quel est le module de z = 1 - i ?",
-            "options": ["√2", "1", "2", "√3"],
-            "correct": "√2",
-            "explanation": "|z| = √(1² + (-1)²) = √2.",
+            "question": "Quelle formule représente l'équivalence masse-énergie ?",
+            "options": [
+                "E = mc²",
+                "E = hf",
+                "E = ½mv²",
+                "E = kQ/r²"
+            ],
+            "correct": "E = mc²",
+            "explanation": "La relation d'Einstein E = mc² établit l'équivalence entre la masse et l'énergie.",
             "level": "Terminale",
-            "topic": "Nombres complexes (Partie 1)"
+            "topic": "Noyaux, masse et énergie"
+        }
+    ],  
+
+    "Dipôle RC": [
+        {
+            "question": "Quelle est la constante de temps τ d'un circuit RC ?",
+            "options": [
+                "τ = R/C",
+                "τ = R×C",
+                "τ = 1/(RC)",
+                "τ = R²C"
+            ],
+            "correct": "τ = R×C",
+            "explanation": "La constante de temps τ = R×C caractérise la rapidité de charge ou décharge du condensateur.",
+            "level": "Terminale",
+            "topic": "Dipôle RC"
         },
         {
-            "question": "Quel est le conjugué de z = 3 + 2i ?",
-            "options": ["3 - 2i", "-3 + 2i", "3 + 2i", "-3 - 2i"],
-            "correct": "3 - 2i",
-            "explanation": "Conjugué : a + bi → a - bi.",
+            "question": "Lors de la décharge d'un condensateur, comment évolue la tension à ses bornes ?",
+            "options": [
+                "Exponentielle croissante",
+                "Exponentielle décroissante",
+                "Linéairement décroissante",
+                "Sinusoïdale"
+            ],
+            "correct": "Exponentielle décroissante",
+            "explanation": "La tension aux bornes d'un condensateur diminue exponentiellement lors de la décharge: U(t) = U₀e^(-t/RC).",
             "level": "Terminale",
-            "topic": "Nombres complexes (Partie 1)"
-        },
-        {
-            "question": "Quelle est la partie imaginaire de z = 4 - 5i ?",
-            "options": ["-5", "4", "5", "0"],
-            "correct": "-5",
-            "explanation": "z = 4 - 5i, partie imaginaire = -5.",
-            "level": "Terminale",
-            "topic": "Nombres complexes (Partie 1)"
-        },
-       
-    ],
-    "Fonctions exponentielles": [
-        {
-            "question": "Quelle est la dérivée de f(x) = e^(-x) ?",
-            "options": ["-e^(-x)", "e^(-x)", "e^x", "-e^x"],
-            "correct": "-e^(-x)",
-            "explanation": "f'(x) = e^(-x) × (-1) = -e^(-x).",
-            "level": "Terminale",
-            "topic": "Fonctions exponentielles"
-        },
-        {
-            "question": "Quelle est la limite de e^(2x) quand x tend vers -∞ ?",
-            "options": ["0", "1", "∞", "-∞"],
-            "correct": "0",
-            "explanation": "e^(2x) tend vers 0 quand x → -∞.",
-            "level": "Terminale",
-            "topic": "Fonctions exponentielles"
-        },
-        {
-            "question": "La fonction f(x) = 2e^x est-elle croissante ?",
-            "options": ["Oui", "Non", "Parfois", "Jamais"],
-            "correct": "Oui",
-            "explanation": "f'(x) = 2e^x > 0, donc strictement croissante.",
-            "level": "Terminale",
-            "topic": "Fonctions exponentielles"
-        },
-       
-    ],
-    "Nombres complexes (Partie 2)": [
-        {
-            "question": "Quelles sont les solutions de z² - 2z + 2 = 0 ?",
-            "options": ["z = 1 ± i", "z = 1 ± 2i", "z = ±1", "Aucune"],
-            "correct": "z = 1 ± i",
-            "explanation": "Δ = 4 - 8 = -4, z = (2 ± √(-4))/2 = 1 ± i.",
-            "level": "Terminale",
-            "topic": "Nombres complexes (Partie 2)"
-        },
-        {
-            "question": "Quelle est la valeur de i³ ?",
-            "options": ["-i", "i", "1", "-1"],
-            "correct": "-i",
-            "explanation": "i³ = i² × i = (-1) × i = -i.",
-            "level": "Terminale",
-            "topic": "Nombres complexes (Partie 2)"
-        },
-        {
-            "question": "Quel est l’argument de z = -√3 + i ?",
-            "options": ["5π/6", "π/6", "-π/6", "-5π/6"],
-            "correct": "5π/6",
-            "explanation": "z dans le 2e quadrant, arg = π - π/6 = 5π/6.",
-            "level": "Terminale",
-            "topic": "Nombres complexes (Partie 2)"
-        },
-       
-    ],
-    "Calcul intégral": [
-        {
-            "question": "Quelle est la valeur de ∫(0 à 2) 2x dx ?",
-            "options": ["4", "2", "8", "0"],
-            "correct": "4",
-            "explanation": "Primitive : x², [x²]_0^2 = 4 - 0 = 4.",
-            "level": "Terminale",
-            "topic": "Calcul intégral"
-        },
-        {
-            "question": "Quelle est l’intégrale de cos(x) dx ?",
-            "options": ["sin(x) + C", "-sin(x) + C", "cos(x) + C", "-cos(x) + C"],
-            "correct": "sin(x) + C",
-            "explanation": "∫cos(x) dx = sin(x) + C.",
-            "level": "Terminale",
-            "topic": "Calcul intégral"
-        },
-        {
-            "question": "Quelle est la valeur de ∫(1 à 2) 1/x² dx ?",
-            "options": ["1/2", "1", "-1/2", "-1"],
-            "correct": "1/2",
-            "explanation": "Primitive : -1/x, [-1/x]_1^2 = -1/2 - (-1) = 1/2.",
-            "level": "Terminale",
-            "topic": "Calcul intégral"
-        },
-     
-    ],
-    "Équations différentielles": [
-        {
-            "question": "Quelle est la solution générale de y' = y ?",
-            "options": ["y = Ce^x", "y = Ce^(-x)", "y = Cx", "y = C"],
-            "correct": "y = Ce^x",
-            "explanation": "Équation y' = ky, solution y = Ce^(kx), ici k = 1.",
-            "level": "Terminale",
-            "topic": "Équations différentielles"
-        },
-        {
-            "question": "Quelle est la solution particulière de y' - 2y = 0 avec y(0) = 2 ?",
-            "options": ["y = 2e^(2x)", "y = 2e^(-2x)", "y = e^(2x)", "y = 2"],
-            "correct": "y = 2e^(2x)",
-            "explanation": "Solution générale : y = Ce^(2x), y(0) = C = 2.",
-            "level": "Terminale",
-            "topic": "Équations différentielles"
-        },
-        {
-            "question": "Quel est le type de l’équation y'' - 4y = 0 ?",
-            "options": ["Linéaire homogène", "Linéaire non homogène", "Non linéaire", "Séparable"],
-            "correct": "Linéaire homogène",
-            "explanation": "Équation linéaire avec second membre nul.",
-            "level": "Terminale",
-            "topic": "Équations différentielles"
-        },
-       
+            "topic": "Dipôle RC"
+        }
     ],
 
-    "Géométrie dans l’espace": [
+    "Dipôle RL": [
         {
-            "question": "Quel est le produit scalaire de u(1,1,0) et v(0,1,1) ?",
-            "options": ["1", "2", "0", "3"],
-            "correct": "1",
-            "explanation": "u·v = 1×0 + 1×1 + 0×1 = 1.",
+            "question": "Quelle est l'unité de la constante de temps τ = L/R ?",
+            "options": [
+                "Henry",
+                "Ohm",
+                "Seconde",
+                "Farad"
+            ],
+            "correct": "Seconde",
+            "explanation": "L/R a la dimension d'un temps: [L] = H = kg·m²·s⁻²·A⁻², [R] = Ω = kg·m²·s⁻³·A⁻², donc [L/R] = s.",
             "level": "Terminale",
-            "topic": "Géométrie dans l’espace"
-        },
-        {
-            "question": "Quel est le produit vectoriel u×v si u(1,0,0) et v(0,0,1) ?",
-            "options": ["(0,1,0)", "(0,-1,0)", "(1,0,0)", "(0,0,1)"],
-            "correct": "(0,1,0)",
-            "explanation": "u×v = (0,0,Obligatory field: The input field is required. (0,1) = (0,1,0) par calcul du déterminant.",
-            "correct": "(0,1,0)",
-            "explanation": "u×v = (0,1,0) par calcul du déterminant.",
-            "level": "Terminale",
-            "topic": "Géométrie dans l’espace"
-        },
-        {
-            "question": "Quelle est la distance entre A(1,0,1) et B(0,1,0) ?",
-            "options": ["√3", "√2", "2", "1"],
-            "correct": "√3",
-            "explanation": "d = √((1-0)² + (0-1)² + (1-0)²) = √3.",
-            "level": "Terminale",
-            "topic": "Géométrie dans l’espace"
-        },
-       
+            "topic": "Dipôle RL"
+        }
     ],
 
-    "Dénombrement et probabilités": [
+    "Oscillations libres d'un circuit RLC série": [
         {
-            "question": "Quel est le nombre de combinaisons de 5 objets pris 2 à 2 ?",
-            "options": ["10", "5", "20", "25"],
-            "correct": "10",
-            "explanation": "C(5,2) = 5!/(2!3!) = 10.",
+            "question": "Dans un circuit RLC série, quel est le régime des oscillations lorsque R = 0 ?",
+            "options": [
+                "Pseudo-périodique",
+                "Apériodique",
+                "Critique",
+                "Périodique sinusoïdal"
+            ],
+            "correct": "Périodique sinusoïdal",
+            "explanation": "Sans résistance (R=0), les oscillations sont sinusoïdales et non amorties.",
             "level": "Terminale",
-            "topic": "Dénombrement et probabilités"
-        },
+            "topic": "Oscillations libres d'un circuit RLC série"
+        }
+    ],
+
+    "Circuit RLC série en régime sinusoïdal forcé": [
         {
-            "question": "Quelle est la probabilité de tirer une carte rouge dans un jeu de 52 cartes ?",
-            "options": ["1/2", "1/4", "1/13", "1/26"],
-            "correct": "1/2",
-            "explanation": "P = 26/52 = 1/2 (26 cartes rouges sur 52).",
+            "question": "À la résonance d'un circuit RLC série, que vaut le déphasage entre tension et courant ?",
+            "options": [
+                "π/2",
+                "π",
+                "0",
+                "-π/2"
+            ],
+            "correct": "0",
+            "explanation": "À la résonance, le circuit est purement résistif, donc tension et courant sont en phase.",
             "level": "Terminale",
-            "topic": "Dénombrement et probabilités"
-        },
+            "topic": "Circuit RLC série en régime sinusoïdal forcé"
+        }
+    ],
+
+    "Ondes électromagnétiques": [
         {
-            "question": "Quel est le nombre de permutations de 3 objets ?",
-            "options": ["6", "3", "9", "12"],
-            "correct": "6",
-            "explanation": "P(3) = 3! = 6.",
+            "question": "Quelle est la vitesse de propagation des ondes électromagnétiques dans le vide ?",
+            "options": [
+                "3 × 10⁵ m/s",
+                "3 × 10⁸ m/s",
+                "3 × 10¹⁰ m/s",
+                "340 m/s"
+            ],
+            "correct": "3 × 10⁸ m/s",
+            "explanation": "La vitesse de la lumière dans le vide est c = 299 792 458 m/s ≈ 3 × 10⁸ m/s.",
             "level": "Terminale",
-            "topic": "Dénombrement et probabilités"
-        },
-       
-    ], 
+            "topic": "Ondes électromagnétiques"
+        }
+    ],
+
+    "Modulation d'amplitude": [
+        {
+            "question": "Quel est le rôle de la modulation d'amplitude ?",
+            "options": [
+                "Amplifier le signal",
+                "Transposer un signal basse fréquence sur une porteuse haute fréquence",
+                "Réduire le bruit",
+                "Numériser un signal analogique"
+            ],
+            "correct": "Transposer un signal basse fréquence sur une porteuse haute fréquence",
+            "explanation": "La modulation permet de faire voyager l'information (BF) en la faisant porter par une onde haute fréquence.",
+            "level": "Terminale",
+            "topic": "Modulation d'amplitude"
+        }
+    ],
+
+    "Transformations lentes et transformations rapides": [
+        {
+            "question": "Qu'est-ce qui caractérise une transformation rapide ?",
+            "options": [
+                "Elle est complète en moins d'une seconde",
+                "Elle est instantanée à l'échelle humaine",
+                "Elle nécessite un catalyseur",
+                "Elle libère beaucoup de chaleur"
+            ],
+            "correct": "Elle est instantanée à l'échelle humaine",
+            "explanation": "Une transformation est dite rapide si elle est achevée en un temps très court à l'échelle humaine.",
+            "level": "Terminale",
+            "topic": "Transformations lentes et transformations rapides"
+        }
+    ],
+
+    "Suivi temporel d'une transformation chimique - Vitesse de réaction": [
+        {
+            "question": "Comment définit-on la vitesse volumique de réaction ?",
+            "options": [
+                "v = (1/V) dn/dt",
+                "v = dn/dt",
+                "v = dc/dt",
+                "v = (1/νᵢ) dcᵢ/dt"
+            ],
+            "correct": "v = (1/νᵢ) dcᵢ/dt",
+            "explanation": "La vitesse volumique de réaction est définie par v = (1/νᵢ) dcᵢ/dt où νᵢ est le coefficient stœchiométrique.",
+            "level": "Terminale",
+            "topic": "Suivi temporel d'une transformation chimique - Vitesse de réaction"
+        }
+    ],
+
+    "Transformations chimiques s'effectuant dans les 2 sens": [
+        {
+            "question": "Qu'est-ce qu'une transformation réversible ?",
+            "options": [
+                "Une transformation qui peut se produire dans les deux sens",
+                "Une transformation complète",
+                "Une transformation rapide",
+                "Une transformation avec échange de chaleur"
+            ],
+            "correct": "Une transformation qui peut se produire dans les deux sens",
+            "explanation": "Une transformation réversible peut évoluer simultanément dans le sens direct et inverse.",
+            "level": "Terminale",
+            "topic": "Transformations chimiques s'effectuant dans les 2 sens"
+        }
+    ],
+
+    "État d'équilibre d'un système chimique": [
+        {
+            "question": "À l'équilibre chimique, que peut-on dire des vitesses des réactions directe et inverse ?",
+            "options": [
+                "v_directe > v_inverse",
+                "v_directe < v_inverse",
+                "v_directe = v_inverse = 0",
+                "v_directe = v_inverse ≠ 0"
+            ],
+            "correct": "v_directe = v_inverse ≠ 0",
+            "explanation": "À l'équilibre, les vitesses des réactions directe et inverse sont égales et non nulles.",
+            "level": "Terminale",
+            "topic": "État d'équilibre d'un système chimique"
+        }
+    ],
+
+    "Transformations liées à des réactions acide-base": [
+        {
+            "question": "Qu'est-ce qu'un couple acide-base ?",
+            "options": [
+                "Deux substances de pH différent",
+                "Un acide et une base qui diffèrent par un proton H⁺",
+                "Un acide fort et une base forte",
+                "Deux solutions de concentrations différentes"
+            ],
+            "correct": "Un acide et une base qui diffèrent par un proton H⁺",
+            "explanation": "Un couple acide/base est constitué de deux espèces chimiques qui se transforment l'une en l'autre par échange d'un proton H⁺.",
+            "level": "Terminale",
+            "topic": "Transformations liées à des réactions acide-base"
+        }
+    ],
+
+    "Dosage acido-basique": [
+        {
+            "question": "Quel indicateur est souvent utilisé pour le dosage acide fort-base forte ?",
+            "options": [
+                "Bleu de bromothymol",
+                "Phénolphtaléine",
+                "Hélianthine",
+                "Tout indicateur dont la zone de virage contient pH=7"
+            ],
+            "correct": "Tout indicateur dont la zone de virage contient pH=7",
+            "explanation": "Pour un dosage acide fort-base fort, le pH à l'équivalence est 7, donc tout indicateur avec zone de virage autour de 7 convient.",
+            "level": "Terminale",
+            "topic": "Dosage acido-basique"
+        }
+    ],
+
+    "Lois de Newton": [
+        {
+            "question": "Quelle loi énonce que tout corps persévère dans son état de repos ou de mouvement uniforme ?",
+            "options": [
+                "Principe fondamental de la dynamique",
+                "Principe d'inertie",
+                "Principe des actions réciproques",
+                "Loi de la gravitation universelle"
+            ],
+            "correct": "Principe d'inertie",
+            "explanation": "C'est la première loi de Newton, aussi appelée principe d'inertie.",
+            "level": "Terminale",
+            "topic": "Lois de Newton"
+        }
+    ],
+
+    "Chute libre verticale d'un solide": [
+        {
+            "question": "En chute libre sans frottement, quelle est l'accélération d'un corps ?",
+            "options": [
+                "g vers le haut",
+                "g vers le bas",
+                "Nulle",
+                "Variable"
+            ],
+            "correct": "g vers le bas",
+            "explanation": "En chute libre sans frottement, l'accélération est égale à l'accélération de la pesanteur g (≈9,8 m/s²) dirigée vers le bas.",
+            "level": "Terminale",
+            "topic": "Chute libre verticale d'un solide"
+        }
+    ],
+
+    "Mouvements plans": [
+        {
+            "question": "Quelle est la trajectoire d'un projectile lancé dans le vide avec une vitesse initiale horizontale ?",
+            "options": [
+                "Droite horizontale",
+                "Parabole",
+                "Cercle",
+                "Spirale"
+            ],
+            "correct": "Parabole",
+            "explanation": "Sous l'effet de la gravité et sans frottement, la trajectoire est parabolique.",
+            "level": "Terminale",
+            "topic": "Mouvements plans"
+        }
+    ],
+
+    "Mouvement des satellites et des planètes": [
+        {
+            "question": "Quelle loi décrit la relation entre période et demi-grand axe pour les planètes ?",
+            "options": [
+                "Loi de Kepler",
+                "Loi de Newton",
+                "Loi de Hooke",
+                "Loi de Coulomb"
+            ],
+            "correct": "Loi de Kepler",
+            "explanation": "La 3ème loi de Kepler relie le carré de la période au cube du demi-grand axe: T²/a³ = constante.",
+            "level": "Terminale",
+            "topic": "Mouvement des satellites et des planètes"
+        }
+    ],
+
+    "Mouvement de rotation d'un solide autour d'un axe fixe": [
+        {
+            "question": "Quelle grandeur est l'analogue de la masse pour la rotation ?",
+            "options": [
+                "Le moment d'inertie",
+                "Le moment cinétique",
+                "Le couple",
+                "La vitesse angulaire"
+            ],
+            "correct": "Le moment d'inertie",
+            "explanation": "Le moment d'inertie joue le même rôle pour la rotation que la masse pour la translation.",
+            "level": "Terminale",
+            "topic": "Mouvement de rotation d'un solide autour d'un axe fixe"
+        }
+    ],
+
+    "Systèmes mécaniques oscillants": [
+        {
+            "question": "Quelle est la période propre d'un oscillateur harmonique masse-ressort ?",
+            "options": [
+                "T = 2π√(m/k)",
+                "T = 2π√(k/m)",
+                "T = 2π√(g/l)",
+                "T = 2π√(l/g)"
+            ],
+            "correct": "T = 2π√(m/k)",
+            "explanation": "Pour un ressort de raideur k avec une masse m, la période propre est T = 2π√(m/k).",
+            "level": "Terminale",
+            "topic": "Systèmes mécaniques oscillants"
+        }
+    ],
+
+    "Aspects énergétiques des oscillations mécaniques": [
+        {
+            "question": "Dans un oscillateur harmonique non amorti, quelle forme prend l'énergie mécanique totale ?",
+            "options": [
+                "Elle varie sinusoïdalement",
+                "Elle est constante",
+                "Elle décroît exponentiellement",
+                "Elle est nulle"
+            ],
+            "correct": "Elle est constante",
+            "explanation": "En l'absence d'amortissement, l'énergie mécanique (cinétique + potentielle) se conserve.",
+            "level": "Terminale",
+            "topic": "Aspects énergétiques des oscillations mécaniques"
+        }
+    ],
+
+    "Atome et mécanique de Newton": [
+        {
+            "question": "Quel modèle atomique représente les électrons en orbite autour du noyau ?",
+            "options": [
+                "Modèle de Thomson",
+                "Modèle de Rutherford",
+                "Modèle de Bohr",
+                "Modèle quantique"
+            ],
+            "correct": "Modèle de Bohr",
+            "explanation": "Bohr a proposé un modèle planétaire avec des électrons sur des orbites circulaires stationnaires.",
+            "level": "Terminale",
+            "topic": "Atome et mécanique de Newton"
+        }
+    ],
+
+    "Évolution spontanée d'un système chimique": [
+        {
+            "question": "Quelle fonction thermodynamique permet de prédire la spontanéité d'une transformation ?",
+            "options": [
+                "L'enthalpie H",
+                "L'énergie interne U",
+                "L'enthalpie libre G",
+                "L'entropie S"
+            ],
+            "correct": "L'enthalpie libre G",
+            "explanation": "À T et P constantes, une transformation est spontanée si ΔG < 0.",
+            "level": "Terminale",
+            "topic": "Évolution spontanée d'un système chimique"
+        }
+    ],
+
+    "Transformations spontanées dans les piles et production d'énergie": [
+        {
+            "question": "Quelle est la polarité de l'anode dans une pile ?",
+            "options": [
+                "Positive",
+                "Négative",
+                "Dépend de la pile",
+                "Neutre"
+            ],
+            "correct": "Négative",
+            "explanation": "Dans une pile, l'anode est l'électrode où se produit l'oxydation, elle est donc négative.",
+            "level": "Terminale",
+            "topic": "Transformations spontanées dans les piles et production d'énergie"
+        }
+    ],
+
+    "Transformations forcées (Électrolyse)": [
+        {
+            "question": "Quel appareil permet de réaliser une électrolyse ?",
+            "options": [
+                "Un générateur",
+                "Un électrolyseur",
+                "Une pile",
+                "Un conducteur ohmique"
+            ],
+            "correct": "Un électrolyseur",
+            "explanation": "L'électrolyse est une transformation forcée réalisée dans un électrolyseur branché à un générateur.",
+            "level": "Terminale",
+            "topic": "Transformations forcées (Électrolyse)"
+        }
+    ],
+
+    "Réactions d'estérification et d'hydrolyse": [
+        {
+            "question": "Quel catalyseur est généralement utilisé pour l'estérification ?",
+            "options": [
+                "Un acide fort",
+                "Une base forte",
+                "Un métal",
+                "De l'eau"
+            ],
+            "correct": "Un acide fort",
+            "explanation": "Les ions H⁺ catalysent la réaction d'estérification en activant le groupe carbonyle.",
+            "level": "Terminale",
+            "topic": "Réactions d'estérification et d'hydrolyse"
+        }
+    ],
+
+    "Contrôle de l'évolution d'un système chimique": [
+        {
+            "question": "Comment peut-on déplacer un équilibre chimique selon le principe de Le Chatelier ?",
+            "options": [
+                "En modifiant la température",
+                "En modifiant la pression",
+                "En modifiant les concentrations",
+                "Toutes ces réponses"
+            ],
+            "correct": "Toutes ces réponses",
+            "explanation": "Le principe de Le Chatelier stipule qu'un système à l'équilibre s'oppose à toute modification des conditions.",
+            "level": "Terminale",
+            "topic": "Contrôle de l'évolution d'un système chimique"
+        }
+    ]
 }
+
+# ... (Continuer avec tous les autres thèmes de la liste)

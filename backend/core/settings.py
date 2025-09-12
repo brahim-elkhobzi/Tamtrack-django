@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'rest_framework',
 
 ]
+APPEND_SLASH=False
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

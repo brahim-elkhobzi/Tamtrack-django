@@ -38,7 +38,7 @@ class Score(models.Model):
         return f"Score de {self.user.get_full_name()} sur '{self.topic}': {self.score}%"
 
 class Recommendation(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField()
     matiere = models.CharField(max_length=100, blank=True, null=True) 
     timestamp = models.DateTimeField(auto_now_add=True)
