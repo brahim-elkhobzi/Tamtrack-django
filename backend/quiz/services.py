@@ -1,8 +1,6 @@
 # quiz/services.py
 
-from .quiz_data import deuxieme_bac
-from .quiz_data import premier_bac
-from .quiz_data import tronc_commun
+
 import random
 from rest_framework.views import APIView
 from rest_framework.response import Response
