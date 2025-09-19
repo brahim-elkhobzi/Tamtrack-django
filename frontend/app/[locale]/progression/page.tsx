@@ -22,12 +22,12 @@ const ProgressionPage = () => {
   return (
     <div className="flex bg-[#f4f6f9] min-h-screen">
       {/* On passe "Ma progression" comme page active */}
-      <Sidebar activePage="Ma progression" />
+      <Sidebar  />
 
-      <main className="flex-1 p-8">
+      <main className="flex-1 p-8 ml-72">
         <DashboardHeader />
 
-        <div className="mb-8">
+        <div className="space-y-4 mt-8 pt-8">
           <h1 className="text-4xl font-bold text-orange-500">Ma progression</h1>
           <p className="text-gray-600 text-lg">Suivez votre évolution et identifiez vos axes d'amélioration</p>
         </div>

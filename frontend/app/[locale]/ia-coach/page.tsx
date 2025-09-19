@@ -7,11 +7,11 @@ import LearningProfileCard from './components/LearningProfileCard'; // Mettez le
 
 const IACoachPage: FC = () => {
     return (
-        <div className="flex  min-h-screen">
-            <Sidebar activePage="Mon IA Coach" />
-            <main className="flex-1 p-6 md:p-8 overflow-y-auto">
+        <div className="flex min-h-screen">
+            <Sidebar />
+            <main className="flex-1 p-6 md:p-8 overflow-y-auto ml-72">
                 <DashboardHeader />
-                <div className="space-y-4 mt-8">
+                <div className="space-y-4 mt-8 pt-8">
                     <h1 className="text-3xl md:text-4xl font-bold text-orange-500">Mon IA Coach</h1>
                     <p className="text-gray-500 dark:text-gray-400">Votre assistant personnel pour un apprentissage optimisé</p>
                 </div>

@@ -26,7 +26,8 @@ const DashboardHeader = () => {
   }, []);
 
   return (
-    <header className="flex justify-between items-center mb-10">
+    <header className="fixed top-0 left-65 right-0 z-50 flex items-center justify-between p-4 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700 shadow-md">
+    
       <div className="relative w-2/5">
         <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500" />
         <input 

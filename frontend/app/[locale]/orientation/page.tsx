@@ -14,12 +14,12 @@ import Testimonials from './components/Testimonials';
 
 const OrientationPage: FC = () => {
     return (
-        <div className="flex bg-gray-100 dark:bg-gray-900 min-h-screen">
+        <div className="flex min-h-screen">
             <Sidebar /> {/* S'assure que le bon lien "Orientation+" est actif */}
-            <main className="flex-1 p-6 md:p-8 overflow-y-auto">
+            <main className="flex-1 p-6 md:p-8 overflow-y-auto ml-72">
                 <DashboardHeader />
                 
-                <div className="space-y-4 mt-8">
+                <div className="space-y-4 mt-8 pt-8">
                     <h1 className="text-3xl md:text-4xl font-bold text-orange-500">ORIENTATION+</h1>
                     <p className="text-gray-500 dark:text-gray-400">Guidance Pro</p>
                 </div>

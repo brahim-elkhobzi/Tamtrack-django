@@ -29,7 +29,7 @@ const Sidebar = () => {
     const pathname = usePathname();
 
     return (
-        <aside className="w-64 bg-[#0a2540] text-white p-6 flex-shrink-0 min-h-screen">
+        <aside className="fixed top-0 left-0 z-40 w-64 h-[calc(200vh-2rem)] bg-[#0a2540] text-white p-6 rounded-2xl shadow-xl">
             <div className="mb-12">
                 <h1 className="text-3xl font-bold">TamTrack</h1>
                 <p className="text-sm text-gray-300">One Journey, A Lifetime</p>

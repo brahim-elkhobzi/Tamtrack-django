@@ -7,6 +7,9 @@ import { FiMic, FiX, FiUploadCloud } from 'react-icons/fi';
 import api from '@/utils/axios'; // Votre client Axios configuré
 import { MathJax, MathJaxContext } from 'better-react-mathjax';
 
+import Sidebar from '@/app/[locale]/home/components/Sidebar';
+import DashboardHeader from '@/app/[locale]/home/components/DashboardHeader';
+
 // Configuration MathJax (vous l'aviez déjà, c'est parfait)
 const mathJaxConfig = {
   // ... votre config ...
@@ -86,8 +89,11 @@ const AISolverPage: FC = () => {
     
     // Le JSX réplique votre design avec Tailwind CSS et des composants React
     return (
-        <div className="bg-gradient-to-br from-[#0f0f23] to-[#16213e] text-slate-200 min-h-screen font-sans">
+        <div className="flex  min-h-screen">
+            <Sidebar />
+            
             <div className="container mx-auto p-5 relative z-10">
+                <DashboardHeader />
                 <header className="text-center mb-10 p-10 bg-[var(--glass-bg)] backdrop-blur-xl border border-[var(--glass-border)] rounded-2xl shadow-xl">
                     <h1 className="text-4xl font-extrabold mb-2 bg-gradient-to-r from-white to-purple-400 bg-clip-text text-transparent">
                         Tuteur Mathématique IA
